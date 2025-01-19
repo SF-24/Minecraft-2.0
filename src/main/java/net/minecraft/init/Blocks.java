@@ -1,37 +1,6 @@
 package net.minecraft.init;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockBeacon;
-import net.minecraft.block.BlockBush;
-import net.minecraft.block.BlockCactus;
-import net.minecraft.block.BlockCauldron;
-import net.minecraft.block.BlockChest;
-import net.minecraft.block.BlockDaylightDetector;
-import net.minecraft.block.BlockDeadBush;
-import net.minecraft.block.BlockDoublePlant;
-import net.minecraft.block.BlockDynamicLiquid;
-import net.minecraft.block.BlockFire;
-import net.minecraft.block.BlockFlower;
-import net.minecraft.block.BlockGrass;
-import net.minecraft.block.BlockHopper;
-import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.BlockMycelium;
-import net.minecraft.block.BlockPistonBase;
-import net.minecraft.block.BlockPistonExtension;
-import net.minecraft.block.BlockPistonMoving;
-import net.minecraft.block.BlockPortal;
-import net.minecraft.block.BlockRedstoneComparator;
-import net.minecraft.block.BlockRedstoneRepeater;
-import net.minecraft.block.BlockRedstoneWire;
-import net.minecraft.block.BlockReed;
-import net.minecraft.block.BlockSand;
-import net.minecraft.block.BlockSkull;
-import net.minecraft.block.BlockSlab;
-import net.minecraft.block.BlockStainedGlass;
-import net.minecraft.block.BlockStainedGlassPane;
-import net.minecraft.block.BlockStaticLiquid;
-import net.minecraft.block.BlockTallGrass;
-import net.minecraft.block.BlockTripWireHook;
+import net.minecraft.block.*;
 import net.minecraft.util.ResourceLocation;
 
 public class Blocks
@@ -234,6 +203,29 @@ public class Blocks
     public static final Block red_sandstone_stairs;
     public static final BlockSlab double_stone_slab2;
     public static final BlockSlab stone_slab2;
+    // New stuff
+    public static final Block nether_ash_ore;
+    public static final Block steel_block;
+    public static final Block nether_gold_ore;
+
+    public static final Block ruby_ore;
+    public static final Block ruby_block;
+
+
+    public static final Block amethyst_block;
+    public static final Block amethyst_crystal;
+    public static final Block cobweb_block;
+    public static final Block rail_block;
+    public static final Block gold_rail_block;
+    public static final Block detector_rail_block;
+    public static final Block activator_rail_block;
+
+    public static final Block compressed_cobblestone;
+
+    public static final BlockAetherPortal aether_portal;
+
+    public static final BlockFloating gravitite_ore;
+
 
     /**
      * Returns the Block in the blockRegistry with the specified name.
@@ -451,6 +443,26 @@ public class Blocks
             red_sandstone_stairs = getRegisteredBlock("red_sandstone_stairs");
             double_stone_slab2 = (BlockSlab)getRegisteredBlock("double_stone_slab2");
             stone_slab2 = (BlockSlab)getRegisteredBlock("stone_slab2");
+            // New stuff
+            nether_ash_ore = getRegisteredBlock("nether_ash_ore");
+            steel_block = getRegisteredBlock("steel_block");
+            nether_gold_ore = getRegisteredBlock("nether_gold_ore");
+
+            ruby_block = getRegisteredBlock("ruby_block");
+            ruby_ore = getRegisteredBlock("ruby_ore");
+
+            amethyst_crystal = getRegisteredBlock("amethyst_crystal");
+            amethyst_block = getRegisteredBlock("amethyst_block");
+            cobweb_block = getRegisteredBlock("cobweb_block");
+            rail_block = getRegisteredBlock("rail_block");
+            gold_rail_block = getRegisteredBlock("powered_rail_block");
+            detector_rail_block = getRegisteredBlock("detector_rail_block");
+            activator_rail_block = getRegisteredBlock("activator_rail_block");
+
+            compressed_cobblestone = getRegisteredBlock("compressed_cobblestone");
+            aether_portal = (BlockAetherPortal) getRegisteredBlock("aether_portal");
+
+            gravitite_ore = (BlockFloating) getRegisteredBlock("gravitite_ore");
         }
     }
 }

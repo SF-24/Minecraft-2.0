@@ -86,7 +86,7 @@ public class EntityCow extends EntityAnimal
     }
 
     /**
-     * Drop 0-2 items of this living's type
+     * Drop 0-2 items of this living's type -- edited
      *  
      * @param wasRecentlyHit true if this this entity was recently hit by appropriate entity (generally only if player
      * or tameable)
@@ -94,14 +94,16 @@ public class EntityCow extends EntityAnimal
      */
     protected void dropFewItems(boolean wasRecentlyHit, int lootingModifier)
     {
-        int i = this.rand.nextInt(3) + this.rand.nextInt(1 + lootingModifier);
+        // drops 0-5 instead of 0-2
+        int i = this.rand.nextInt(6) + this.rand.nextInt(1 + lootingModifier);
 
         for (int j = 0; j < i; ++j)
         {
             this.dropItem(Items.leather, 1);
         }
 
-        i = this.rand.nextInt(3) + 1 + this.rand.nextInt(1 + lootingModifier);
+        // 1 instead of 1->3, reduced looting effect
+        i = this.rand.nextInt(1) + 1 + this.rand.nextInt(1+lootingModifier);
 
         for (int k = 0; k < i; ++k)
         {

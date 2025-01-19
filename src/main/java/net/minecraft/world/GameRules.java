@@ -2,11 +2,17 @@ package net.minecraft.world;
 
 import java.util.Set;
 import java.util.TreeMap;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumFoodStackType;
+import net.minecraft.item.EnumTweakMode;
+import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class GameRules
 {
-    private TreeMap<String, GameRules.Value> theGameRules = new TreeMap();
+    private final TreeMap<String, GameRules.Value> theGameRules = new TreeMap();
 
     public GameRules()
     {
@@ -25,6 +31,12 @@ public class GameRules
         this.addGameRule("randomTickSpeed", "3", GameRules.ValueType.NUMERICAL_VALUE);
         this.addGameRule("sendCommandFeedback", "true", GameRules.ValueType.BOOLEAN_VALUE);
         this.addGameRule("reducedDebugInfo", "false", GameRules.ValueType.BOOLEAN_VALUE);
+        this.addGameRule("currentMode", String.valueOf(EnumTweakMode.DEFAULT), ValueType.ENUM_MODE_VALUE);
+        this.addGameRule("maxFoodStack", String.valueOf(EnumFoodStackType.NORMAL.getDefaultValue()), ValueType.NUMERICAL_VALUE);
+        this.addGameRule("maxFoodStackLarge", String.valueOf(EnumFoodStackType.LARGE.getDefaultValue()), ValueType.NUMERICAL_VALUE);
+        this.addGameRule("maxFoodStackSoup", String.valueOf(EnumFoodStackType.SOUP.getDefaultValue()), ValueType.NUMERICAL_VALUE);
+        this.addGameRule("maxFoodStackHealing", String.valueOf(EnumFoodStackType.HEALING.getDefaultValue()), ValueType.NUMERICAL_VALUE);
+
     }
 
     public void addGameRule(String key, String value, GameRules.ValueType type)
@@ -34,11 +46,54 @@ public class GameRules
 
     public void setOrCreateGameRule(String key, String ruleValue)
     {
-        GameRules.Value gamerules$value = (GameRules.Value)this.theGameRules.get(key);
+        GameRules.Value gamerules$value = this.theGameRules.get(key);
 
         if (gamerules$value != null)
         {
             gamerules$value.setValue(ruleValue);
+            if(key.equals("currentMode")) {
+                EnumTweakMode value = gamerules$value.getMode();
+                Item.setCurrentMode(value);
+                Minecraft.getMinecraft().setCurrentMode(value);
+            }
+            if(key.equals("maxFoodStack")) {
+                try {
+                    System.out.println(ruleValue);
+                    int value = Integer.parseInt(String.valueOf(ruleValue));
+                    Item.updateFoodStackCount(value, EnumFoodStackType.NORMAL);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    System.out.println("Value is not integer");
+                }
+            }
+            if(key.equals("maxFoodStackHealing")) {
+                try {
+                    System.out.println(ruleValue);
+                    int value = Integer.parseInt(String.valueOf(ruleValue));
+                    Item.updateFoodStackCount(value, EnumFoodStackType.HEALING);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    System.out.println("Value is not integer");
+                }
+            }
+            if(key.equals("maxFoodStackLarge")) {
+                try {
+                    int value = Integer.parseInt(String.valueOf(ruleValue));
+                    Item.updateFoodStackCount(value, EnumFoodStackType.LARGE);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    System.out.println("Value is not integer");
+                }
+            }
+            if(key.equals("maxFoodStackSoup")) {
+                try {
+                    int value = Integer.parseInt(String.valueOf(ruleValue));
+                    Item.updateFoodStackCount(value, EnumFoodStackType.SOUP);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    System.out.println("Value is not integer");
+                }
+            }
         }
         else
         {
@@ -47,11 +102,19 @@ public class GameRules
     }
 
     /**
+     * Gets the enum mode value
+     * */
+    public EnumTweakMode getEnumTweakMode(String name) {
+        GameRules.Value gamerules$value = this.theGameRules.get(name);
+        return gamerules$value.getMode();
+    }
+
+    /**
      * Gets the string Game Rule value.
      */
     public String getString(String name)
     {
-        GameRules.Value gamerules$value = (GameRules.Value)this.theGameRules.get(name);
+        GameRules.Value gamerules$value = this.theGameRules.get(name);
         return gamerules$value != null ? gamerules$value.getString() : "";
     }
 
@@ -60,13 +123,13 @@ public class GameRules
      */
     public boolean getBoolean(String name)
     {
-        GameRules.Value gamerules$value = (GameRules.Value)this.theGameRules.get(name);
-        return gamerules$value != null ? gamerules$value.getBoolean() : false;
+        GameRules.Value gamerules$value = this.theGameRules.get(name);
+        return gamerules$value != null && gamerules$value.getBoolean();
     }
 
     public int getInt(String name)
     {
-        GameRules.Value gamerules$value = (GameRules.Value)this.theGameRules.get(name);
+        GameRules.Value gamerules$value = this.theGameRules.get(name);
         return gamerules$value != null ? gamerules$value.getInt() : 0;
     }
 
@@ -79,7 +142,7 @@ public class GameRules
 
         for (String s : this.theGameRules.keySet())
         {
-            GameRules.Value gamerules$value = (GameRules.Value)this.theGameRules.get(s);
+            GameRules.Value gamerules$value = this.theGameRules.get(s);
             nbttagcompound.setString(s, gamerules$value.getString());
         }
 
@@ -104,7 +167,7 @@ public class GameRules
     public String[] getRules()
     {
         Set<String> set = this.theGameRules.keySet();
-        return (String[])set.toArray(new String[set.size()]);
+        return set.toArray(new String[set.size()]);
     }
 
     /**
@@ -117,18 +180,18 @@ public class GameRules
 
     public boolean areSameType(String key, GameRules.ValueType otherValue)
     {
-        GameRules.Value gamerules$value = (GameRules.Value)this.theGameRules.get(key);
+        GameRules.Value gamerules$value = this.theGameRules.get(key);
         return gamerules$value != null && (gamerules$value.getType() == otherValue || otherValue == GameRules.ValueType.ANY_VALUE);
     }
 
     static class Value
     {
+        private EnumTweakMode valueMode;
         private String valueString;
         private boolean valueBoolean;
         private int valueInteger;
         private double valueDouble;
         private final GameRules.ValueType type;
-
         public Value(String value, GameRules.ValueType type)
         {
             this.type = type;
@@ -141,13 +204,25 @@ public class GameRules
             this.valueBoolean = Boolean.parseBoolean(value);
             this.valueInteger = this.valueBoolean ? 1 : 0;
 
+
+            try
+            {
+                valueMode = EnumTweakMode.DEFAULT;
+                for (EnumTweakMode mode : EnumTweakMode.values()) {
+                    if(value.equalsIgnoreCase(mode.name())) {
+                        valueMode = mode;
+                    }
+                }
+            }
+            catch (Exception e) {
+            }
+
             try
             {
                 this.valueInteger = Integer.parseInt(value);
             }
             catch (NumberFormatException var4)
             {
-                ;
             }
 
             try
@@ -156,9 +231,10 @@ public class GameRules
             }
             catch (NumberFormatException var3)
             {
-                ;
             }
         }
+
+        public EnumTweakMode getMode() {return this.valueMode; }
 
         public String getString()
         {
@@ -181,10 +257,11 @@ public class GameRules
         }
     }
 
-    public static enum ValueType
+    public enum ValueType
     {
         ANY_VALUE,
         BOOLEAN_VALUE,
-        NUMERICAL_VALUE;
+        NUMERICAL_VALUE,
+        ENUM_MODE_VALUE
     }
 }

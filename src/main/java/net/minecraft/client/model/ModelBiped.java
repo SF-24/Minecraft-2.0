@@ -139,6 +139,15 @@ public class ModelBiped extends ModelBase
         this.bipedRightLeg.rotateAngleY = 0.0F;
         this.bipedLeftLeg.rotateAngleY = 0.0F;
 
+        if(this instanceof ModelPlayer) {
+            if(((ModelPlayer) this).bipedTail!=null) {
+                float rot = MathHelper.cos(limbSwingAmount * 0.6662F) * 1.4F * limbSwingAmount;
+                if(rot < 0.75) rot = 0.7F;
+                ((ModelPlayer) this).bipedTail.rotateAngleX = rot;
+            }
+        }
+
+
         if (this.isRiding)
         {
             this.bipedRightArm.rotateAngleX += -((float)Math.PI / 5F);

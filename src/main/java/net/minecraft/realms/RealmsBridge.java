@@ -30,6 +30,8 @@ public class RealmsBridge extends RealmsScreen
         }
     }
 
+    // disabled realms code
+    /*
     public GuiScreenRealmsProxy getNotificationScreen(GuiScreen p_getNotificationScreen_1_)
     {
         try
@@ -46,7 +48,7 @@ public class RealmsBridge extends RealmsScreen
             LOGGER.error((String)"Realms module missing", (Throwable)exception);
             return null;
         }
-    }
+    }*/
 
     public void init()
     {

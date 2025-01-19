@@ -25,16 +25,16 @@ public class BlockJukebox extends BlockContainer
     protected BlockJukebox()
     {
         super(Material.wood, MapColor.dirtColor);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(HAS_RECORD, Boolean.valueOf(false)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(HAS_RECORD, Boolean.FALSE));
         this.setCreativeTab(CreativeTabs.tabDecorations);
     }
 
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        if (((Boolean)state.getValue(HAS_RECORD)).booleanValue())
+        if (state.getValue(HAS_RECORD))
         {
             this.dropRecord(worldIn, pos, state);
-            state = state.withProperty(HAS_RECORD, Boolean.valueOf(false));
+            state = state.withProperty(HAS_RECORD, Boolean.FALSE);
             worldIn.setBlockState(pos, state, 2);
             return true;
         }
@@ -53,7 +53,7 @@ public class BlockJukebox extends BlockContainer
             if (tileentity instanceof BlockJukebox.TileEntityJukebox)
             {
                 ((BlockJukebox.TileEntityJukebox)tileentity).setRecord(new ItemStack(recordStack.getItem(), 1, recordStack.getMetadata()));
-                worldIn.setBlockState(pos, state.withProperty(HAS_RECORD, Boolean.valueOf(true)), 2);
+                worldIn.setBlockState(pos, state.withProperty(HAS_RECORD, Boolean.TRUE), 2);
             }
         }
     }
@@ -72,8 +72,8 @@ public class BlockJukebox extends BlockContainer
                 if (itemstack != null)
                 {
                     worldIn.playAuxSFX(1005, pos, 0);
-                    worldIn.playRecord(pos, (String)null);
-                    blockjukebox$tileentityjukebox.setRecord((ItemStack)null);
+                    worldIn.playRecord(pos, null);
+                    blockjukebox$tileentityjukebox.setRecord(null);
                     float f = 0.7F;
                     double d0 = (double)(worldIn.rand.nextFloat() * f) + (double)(1.0F - f) * 0.5D;
                     double d1 = (double)(worldIn.rand.nextFloat() * f) + (double)(1.0F - f) * 0.2D + 0.6D;
@@ -147,7 +147,7 @@ public class BlockJukebox extends BlockContainer
      */
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(HAS_RECORD, Boolean.valueOf(meta > 0));
+        return this.getDefaultState().withProperty(HAS_RECORD, meta > 0);
     }
 
     /**
@@ -155,12 +155,12 @@ public class BlockJukebox extends BlockContainer
      */
     public int getMetaFromState(IBlockState state)
     {
-        return ((Boolean)state.getValue(HAS_RECORD)).booleanValue() ? 1 : 0;
+        return state.getValue(HAS_RECORD) ? 1 : 0;
     }
 
     protected BlockState createBlockState()
     {
-        return new BlockState(this, new IProperty[] {HAS_RECORD});
+        return new BlockState(this, HAS_RECORD);
     }
 
     public static class TileEntityJukebox extends TileEntity

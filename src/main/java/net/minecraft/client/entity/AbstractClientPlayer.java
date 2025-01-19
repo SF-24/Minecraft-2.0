@@ -69,13 +69,15 @@ public abstract class AbstractClientPlayer extends EntityPlayer
     public ResourceLocation getLocationSkin()
     {
         NetworkPlayerInfo networkplayerinfo = this.getPlayerInfo();
-        return networkplayerinfo == null ? DefaultPlayerSkin.getDefaultSkin(this.getUniqueID()) : networkplayerinfo.getLocationSkin();
+        return networkplayerinfo == null ? DefaultPlayerSkin.getDefaultSkin(this.getName()) : networkplayerinfo.getLocationSkin();
     }
 
     public ResourceLocation getLocationCape()
     {
-        NetworkPlayerInfo networkplayerinfo = this.getPlayerInfo();
-        return networkplayerinfo == null ? null : networkplayerinfo.getLocationCape();
+        // updated cape getter
+        //NetworkPlayerInfo networkplayerinfo = this.getPlayerInfo();
+        //return networkplayerinfo == null ? null : networkplayerinfo.getLocationCape();
+        return DefaultPlayerSkin.getDefaultCape(this.getName());
     }
 
     public static ThreadDownloadImageData getDownloadImageSkin(ResourceLocation resourceLocationIn, String username)

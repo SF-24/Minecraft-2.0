@@ -24,14 +24,7 @@ import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.entity.projectile.EntityEgg;
-import net.minecraft.entity.projectile.EntityFireball;
-import net.minecraft.entity.projectile.EntityFishHook;
-import net.minecraft.entity.projectile.EntityPotion;
-import net.minecraft.entity.projectile.EntitySmallFireball;
-import net.minecraft.entity.projectile.EntitySnowball;
-import net.minecraft.entity.projectile.EntityWitherSkull;
+import net.minecraft.entity.projectile.*;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemMap;
 import net.minecraft.item.ItemStack;
@@ -535,6 +528,10 @@ public class EntityTrackerEntry
         else if (this.trackedEntity instanceof EntityExpBottle)
         {
             return new S0EPacketSpawnObject(this.trackedEntity, 75);
+        }
+        else if (this.trackedEntity instanceof EntityGrenade)
+        {
+            return new S0EPacketSpawnObject(this.trackedEntity, 201);
         }
         else if (this.trackedEntity instanceof EntityEnderPearl)
         {

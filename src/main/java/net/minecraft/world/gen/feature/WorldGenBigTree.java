@@ -308,10 +308,11 @@ public class WorldGenBigTree extends WorldGenAbstractTree
         this.basePos = position;
         this.rand = new Random(rand.nextLong());
 
-        if (this.heightLimit == 0)
-        {
+        // custom code
+        //if (this.heightLimit == 0)
+        //{
             this.heightLimit = 5 + this.rand.nextInt(this.heightLimitLimit);
-        }
+        //}
 
         if (!this.validTreeLocation())
         {

@@ -3,9 +3,6 @@ package net.minecraft.entity.player;
 import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.mojang.authlib.GameProfile;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.BlockDirectional;
@@ -13,14 +10,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.command.server.CommandBlockLogic;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EnumCreatureAttribute;
-import net.minecraft.entity.IEntityMultiPart;
-import net.minecraft.entity.IMerchant;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.boss.EntityDragonPart;
 import net.minecraft.entity.item.EntityBoat;
@@ -39,45 +29,32 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryEnderChest;
-import net.minecraft.item.EnumAction;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.play.server.S12PacketEntityVelocity;
 import net.minecraft.potion.Potion;
-import net.minecraft.scoreboard.IScoreObjectiveCriteria;
-import net.minecraft.scoreboard.Score;
-import net.minecraft.scoreboard.ScoreObjective;
-import net.minecraft.scoreboard.ScorePlayerTeam;
-import net.minecraft.scoreboard.Scoreboard;
-import net.minecraft.scoreboard.Team;
+import net.minecraft.scoreboard.*;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.stats.AchievementList;
 import net.minecraft.stats.StatBase;
 import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntitySign;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.FoodStats;
-import net.minecraft.util.IChatComponent;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.EnumDifficulty;
-import net.minecraft.world.IInteractionObject;
-import net.minecraft.world.LockCode;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldSettings;
+import net.minecraft.util.*;
+import net.minecraft.world.*;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 @SuppressWarnings("incomplete-switch")
 public abstract class EntityPlayer extends EntityLivingBase
 {
+    public HashMap<ItemFood, Integer> foodHashMap = new HashMap<>();
+
+    public Boolean vikingMode = false;
+
     /** Inventory of the player */
     public InventoryPlayer inventory = new InventoryPlayer(this);
     private InventoryEnderChest theInventoryEnderChest = new InventoryEnderChest();
@@ -200,6 +177,10 @@ public abstract class EntityPlayer extends EntityLivingBase
         this.dataWatcher.addObject(17, Float.valueOf(0.0F));
         this.dataWatcher.addObject(18, Integer.valueOf(0));
         this.dataWatcher.addObject(10, Byte.valueOf((byte)0));
+    }
+
+    public void setVikingMode(boolean value){
+        vikingMode=value;
     }
 
     /**
@@ -583,6 +564,8 @@ public abstract class EntityPlayer extends EntityLivingBase
         this.deathTime = 0;
     }
 
+
+
     protected void updateEntityActionState()
     {
         super.updateEntityActionState();
@@ -719,12 +702,12 @@ public abstract class EntityPlayer extends EntityLivingBase
 
         if (this.getName().equals("Notch"))
         {
-            this.dropItem(new ItemStack(Items.apple, 1), true, false);
+            this.dropItem(new ItemStack(Items.apple, 1), true, false, false);
         }
 
         if (!this.worldObj.getGameRules().getBoolean("keepInventory"))
         {
-            this.inventory.dropAllItems();
+            this.inventory.dropAllItems(false);
         }
 
         if (cause != null)
@@ -822,7 +805,7 @@ public abstract class EntityPlayer extends EntityLivingBase
      */
     public EntityItem dropOneItem(boolean dropAll)
     {
-        return this.dropItem(this.inventory.decrStackSize(this.inventory.currentItem, dropAll && this.inventory.getCurrentItem() != null ? this.inventory.getCurrentItem().stackSize : 1), false, true);
+        return this.dropItem(this.inventory.decrStackSize(this.inventory.currentItem, dropAll && this.inventory.getCurrentItem() != null ? this.inventory.getCurrentItem().stackSize : 1), false, true, false);
     }
 
     /**
@@ -830,10 +813,10 @@ public abstract class EntityPlayer extends EntityLivingBase
      */
     public EntityItem dropPlayerItemWithRandomChoice(ItemStack itemStackIn, boolean unused)
     {
-        return this.dropItem(itemStackIn, false, false);
+        return this.dropItem(itemStackIn, false, false, false);
     }
 
-    public EntityItem dropItem(ItemStack droppedItem, boolean dropAround, boolean traceItem)
+    public EntityItem dropItem(ItemStack droppedItem, boolean dropAround, boolean traceItem, boolean persistent)
     {
         if (droppedItem == null)
         {
@@ -967,8 +950,7 @@ public abstract class EntityPlayer extends EntityLivingBase
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
-    public void readEntityFromNBT(NBTTagCompound tagCompund)
-    {
+    public void readEntityFromNBT(NBTTagCompound tagCompund) {
         super.readEntityFromNBT(tagCompund);
         this.entityUniqueID = getUUID(this.gameProfile);
         NBTTagList nbttaglist = tagCompund.getTagList("Inventory", 10);
@@ -981,32 +963,35 @@ public abstract class EntityPlayer extends EntityLivingBase
         this.experienceTotal = tagCompund.getInteger("XpTotal");
         this.xpSeed = tagCompund.getInteger("XpSeed");
 
-        if (this.xpSeed == 0)
-        {
+        if (this.xpSeed == 0) {
             this.xpSeed = this.rand.nextInt();
         }
 
         this.setScore(tagCompund.getInteger("Score"));
 
-        if (this.sleeping)
-        {
+        if (this.sleeping) {
             this.playerLocation = new BlockPos(this);
             this.wakeUpPlayer(true, true, false);
         }
 
-        if (tagCompund.hasKey("SpawnX", 99) && tagCompund.hasKey("SpawnY", 99) && tagCompund.hasKey("SpawnZ", 99))
-        {
+        if (tagCompund.hasKey("SpawnX", 99) && tagCompund.hasKey("SpawnY", 99) && tagCompund.hasKey("SpawnZ", 99)) {
             this.spawnChunk = new BlockPos(tagCompund.getInteger("SpawnX"), tagCompund.getInteger("SpawnY"), tagCompund.getInteger("SpawnZ"));
             this.spawnForced = tagCompund.getBoolean("SpawnForced");
         }
 
         this.foodStats.readNBT(tagCompund);
+
+        // read food hash map from nbt
+        if (tagCompund.hasKey("FoodMap", 9)) {
+            NBTTagList tagList = tagCompund.getTagList("FoodMap", 10);
+            this.foodStats.readMapFromNbt(tagList);
+       }
         this.capabilities.readCapabilitiesFromNBT(tagCompund);
 
         if (tagCompund.hasKey("EnderItems", 9))
         {
-            NBTTagList nbttaglist1 = tagCompund.getTagList("EnderItems", 10);
-            this.theInventoryEnderChest.loadInventoryFromNBT(nbttaglist1);
+            NBTTagList enderTagList = tagCompund.getTagList("EnderItems", 10);
+            this.theInventoryEnderChest.loadInventoryFromNBT(enderTagList);
         }
     }
 
@@ -1037,6 +1022,7 @@ public abstract class EntityPlayer extends EntityLivingBase
         this.foodStats.writeNBT(tagCompound);
         this.capabilities.writeCapabilitiesToNBT(tagCompound);
         tagCompound.setTag("EnderItems", this.theInventoryEnderChest.saveInventoryToNBT());
+        tagCompound.setTag("FoodMap", this.foodStats.saveMapToNbt());
         ItemStack itemstack = this.inventory.getCurrentItem();
 
         if (itemstack != null && itemstack.getItem() != null)
@@ -1631,6 +1617,8 @@ public abstract class EntityPlayer extends EntityLivingBase
 
         this.sleepTimer = immediately ? 0 : 100;
 
+        this.heal(20);
+
         if (setSpawn)
         {
             this.setSpawnPoint(this.playerLocation, false);
@@ -1774,7 +1762,7 @@ public abstract class EntityPlayer extends EntityLivingBase
 
         if (this.isSprinting())
         {
-            this.addExhaustion(0.8F);
+            this.addExhaustion(0.6F);
         }
         else
         {

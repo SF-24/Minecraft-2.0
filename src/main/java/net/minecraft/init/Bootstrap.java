@@ -26,11 +26,7 @@ import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.item.EntityExpBottle;
 import net.minecraft.entity.item.EntityFireworkRocket;
 import net.minecraft.entity.item.EntityTNTPrimed;
-import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.entity.projectile.EntityEgg;
-import net.minecraft.entity.projectile.EntityPotion;
-import net.minecraft.entity.projectile.EntitySmallFireball;
-import net.minecraft.entity.projectile.EntitySnowball;
+import net.minecraft.entity.projectile.*;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBucket;
@@ -91,6 +87,15 @@ public class Bootstrap
             protected IProjectile getProjectileEntity(World worldIn, IPosition position)
             {
                 return new EntitySnowball(worldIn, position.getX(), position.getY(), position.getZ());
+            }
+        });
+
+        // Dispenser, dispensing holy hand grenade
+        BlockDispenser.dispenseBehaviorRegistry.putObject(Items.holy_grenade, new BehaviorProjectileDispense()
+        {
+            protected IProjectile getProjectileEntity(World worldIn, IPosition position)
+            {
+                return new EntityGrenade(worldIn, position.getX(), position.getY(), position.getZ(), Items.holy_grenade);
             }
         });
         BlockDispenser.dispenseBehaviorRegistry.putObject(Items.experience_bottle, new BehaviorProjectileDispense()

@@ -1,10 +1,15 @@
 package net.minecraft.item;
 
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.stats.StatList;
+import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
+
+import java.util.Random;
 
 public class ItemWritableBook extends Item
 {
@@ -58,4 +63,5 @@ public class ItemWritableBook extends Item
             return true;
         }
     }
+
 }

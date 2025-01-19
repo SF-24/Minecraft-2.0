@@ -27,7 +27,8 @@ public class WorldGenTallGrass extends WorldGenerator
             position = position.down();
         }
 
-        for (int i = 0; i < 128; ++i)
+        // reduced tall grass amount
+        for (int i = 0; i < 72/*was 128, then 56*/; ++i)
         {
             BlockPos blockpos = position.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));
 

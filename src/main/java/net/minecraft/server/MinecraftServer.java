@@ -271,7 +271,9 @@ public abstract class MinecraftServer implements Runnable, ICommandSender, IThre
     {
         this.convertMapIfNeeded(saveName);
         this.setUserMessage("menu.loadingLevel");
-        this.worldServers = new WorldServer[3];
+        // adds different world servers, do not understand it though
+        // extends the dimension limit?
+        this.worldServers = new WorldServer[4];
         this.timeOfLastDimensionTick = new long[this.worldServers.length][100];
         ISaveHandler isavehandler = this.anvilConverterForAnvilFile.getSaveLoader(saveName, true);
         this.setResourcePackFromWorld(this.getFolderName(), isavehandler);
@@ -315,6 +317,11 @@ public abstract class MinecraftServer implements Runnable, ICommandSender, IThre
             if (i == 2)
             {
                 j = 1;
+            }
+            // if is aether
+            if(i == 3)
+            {
+                j = 2;
             }
 
             if (i == 0)
@@ -843,7 +850,7 @@ public abstract class MinecraftServer implements Runnable, ICommandSender, IThre
      */
     public WorldServer worldServerForDimension(int dimension)
     {
-        return dimension == -1 ? this.worldServers[1] : (dimension == 1 ? this.worldServers[2] : this.worldServers[0]);
+        return dimension == -1 ? this.worldServers[1] : (dimension == 1 ? this.worldServers[2] : (dimension == 2 ? this.worldServers[3] : this.worldServers[0]));
     }
 
     /**
@@ -851,7 +858,7 @@ public abstract class MinecraftServer implements Runnable, ICommandSender, IThre
      */
     public String getMinecraftVersion()
     {
-        return "1.8.9";
+        return "2.0";
     }
 
     /**

@@ -47,7 +47,8 @@ public class BlockStone extends Block
      */
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
-        return state.getValue(VARIANT) == BlockStone.EnumType.STONE ? Item.getItemFromBlock(Blocks.cobblestone) : Item.getItemFromBlock(Blocks.stone);
+        // made stones drop cobblestone
+        return (state.getValue(VARIANT) == BlockStone.EnumType.STONE||state.getValue(VARIANT) == EnumType.GRANITE||state.getValue(VARIANT) == EnumType.DIORITE||state.getValue(VARIANT) == EnumType.ANDESITE) ? Item.getItemFromBlock(Blocks.cobblestone) : Item.getItemFromBlock(Blocks.stone);
     }
 
     /**
@@ -88,7 +89,7 @@ public class BlockStone extends Block
 
     protected BlockState createBlockState()
     {
-        return new BlockState(this, new IProperty[] {VARIANT});
+        return new BlockState(this, VARIANT);
     }
 
     public static enum EnumType implements IStringSerializable

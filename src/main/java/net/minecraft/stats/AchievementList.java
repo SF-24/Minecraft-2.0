@@ -23,7 +23,7 @@ public class AchievementList
     public static List<Achievement> achievementList = Lists.<Achievement>newArrayList();
 
     /** Is the 'open inventory' achievement. */
-    public static Achievement openInventory = (new Achievement("achievement.openInventory", "openInventory", 0, 0, Items.book, (Achievement)null)).initIndependentStat().registerStat();
+    public static Achievement openInventory = (new Achievement("achievement.openInventory", "openInventory", 0, 0, Items.book, null)).initIndependentStat().registerStat();
 
     /** Is the 'getting wood' achievement. */
     public static Achievement mineWood = (new Achievement("achievement.mineWood", "mineWood", 2, 1, Blocks.log, openInventory)).registerStat();
@@ -80,8 +80,12 @@ public class AchievementList
     /** Is the 'We Need to Go Deeper' achievement */
     public static Achievement portal = (new Achievement("achievement.portal", "portal", -1, 7, Blocks.obsidian, diamonds)).registerStat();
 
+    /** Is the 'Hostile Paradise' achievement */
+    public static Achievement aetherPortal = (new Achievement("achievement.aetherPortal", "portalAether", -4, 8, Blocks.glowstone, portal)).registerStat();
+
+
     /** Is the 'Return to Sender' achievement */
-    public static Achievement ghast = (new Achievement("achievement.ghast", "ghast", -4, 8, Items.ghast_tear, portal)).setSpecial().registerStat();
+    public static Achievement ghast = (new Achievement("achievement.ghast", "ghast", -3, 9, Items.ghast_tear, portal)).setSpecial().registerStat();
 
     /** Is the 'Into Fire' achievement */
     public static Achievement blazeRod = (new Achievement("achievement.blazeRod", "blazeRod", 0, 9, Items.blaze_rod, portal)).registerStat();

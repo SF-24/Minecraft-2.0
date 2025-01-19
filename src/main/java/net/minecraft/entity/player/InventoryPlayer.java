@@ -752,13 +752,13 @@ public class InventoryPlayer implements IInventory
     /**
      * Drop all armor and main inventory items.
      */
-    public void dropAllItems()
+    public void dropAllItems(boolean persistent)
     {
         for (int i = 0; i < this.mainInventory.length; ++i)
         {
             if (this.mainInventory[i] != null)
             {
-                this.player.dropItem(this.mainInventory[i], true, false);
+                this.player.dropItem(this.mainInventory[i], true, false, true);
                 this.mainInventory[i] = null;
             }
         }
@@ -767,7 +767,7 @@ public class InventoryPlayer implements IInventory
         {
             if (this.armorInventory[j] != null)
             {
-                this.player.dropItem(this.armorInventory[j], true, false);
+                this.player.dropItem(this.armorInventory[j], true, false, true);
                 this.armorInventory[j] = null;
             }
         }

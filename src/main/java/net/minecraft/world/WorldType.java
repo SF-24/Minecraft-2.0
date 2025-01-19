@@ -1,5 +1,7 @@
 package net.minecraft.world;
 
+import net.minecraft.client.renderer.WorldRenderer;
+
 public class WorldType
 {
     /** List of world types. */
@@ -21,6 +23,9 @@ public class WorldType
 
     /** Default (1.1) world type. */
     public static final WorldType DEFAULT_1_1 = (new WorldType(8, "default_1_1", 0)).setCanBeCreated(false);
+
+    /** Random biomes world type */
+    public static final WorldType RANDOM_BIOMES = new WorldType(15, "randomBiomes");
 
     /** ID for this world type. */
     private final int worldTypeId;

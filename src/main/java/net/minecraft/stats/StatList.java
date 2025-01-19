@@ -111,6 +111,7 @@ public class StatList
     public static StatBase field_181741_Y = (new StatBasic("stat.furnaceInteraction", new ChatComponentTranslation("stat.furnaceInteraction", new Object[0]))).registerStat();
     public static StatBase field_181742_Z = (new StatBasic("stat.craftingTableInteraction", new ChatComponentTranslation("stat.workbenchInteraction", new Object[0]))).registerStat();
     public static StatBase field_181723_aa = (new StatBasic("stat.chestOpened", new ChatComponentTranslation("stat.chestOpened", new Object[0]))).registerStat();
+    // defines maximum block id
     public static final StatBase[] mineBlockStatArray = new StatBase[4096];
 
     /** Tracks the number of items a given block or item has been crafted. */

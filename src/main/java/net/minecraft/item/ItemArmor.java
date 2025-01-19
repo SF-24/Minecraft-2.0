@@ -30,12 +30,12 @@ public class ItemArmor extends Item
             int i = blockpos.getX();
             int j = blockpos.getY();
             int k = blockpos.getZ();
-            AxisAlignedBB axisalignedbb = new AxisAlignedBB((double)i, (double)j, (double)k, (double)(i + 1), (double)(j + 1), (double)(k + 1));
-            List<EntityLivingBase> list = source.getWorld().<EntityLivingBase>getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb, Predicates.<EntityLivingBase> and (EntitySelectors.NOT_SPECTATING, new EntitySelectors.ArmoredMob(stack)));
+            AxisAlignedBB axisalignedbb = new AxisAlignedBB(i, j, k, i + 1, j + 1, k + 1);
+            List<EntityLivingBase> list = source.getWorld().getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb, Predicates.and (EntitySelectors.NOT_SPECTATING, new EntitySelectors.ArmoredMob(stack)));
 
             if (list.size() > 0)
             {
-                EntityLivingBase entitylivingbase = (EntityLivingBase)list.get(0);
+                EntityLivingBase entitylivingbase = list.get(0);
                 int l = entitylivingbase instanceof EntityPlayer ? 1 : 0;
                 int i1 = EntityLiving.getArmorPosition(stack);
                 ItemStack itemstack = stack.copy();
@@ -126,7 +126,7 @@ public class ItemArmor extends Item
      */
     public boolean hasColor(ItemStack stack)
     {
-        return this.material != ItemArmor.ArmorMaterial.LEATHER ? false : (!stack.hasTagCompound() ? false : (!stack.getTagCompound().hasKey("display", 10) ? false : stack.getTagCompound().getCompoundTag("display").hasKey("color", 3)));
+        return this.material == ArmorMaterial.LEATHER && (stack.hasTagCompound() && (stack.getTagCompound().hasKey("display", 10) && stack.getTagCompound().getCompoundTag("display").hasKey("color", 3)));
     }
 
     /**
@@ -184,7 +184,7 @@ public class ItemArmor extends Item
     {
         if (this.material != ItemArmor.ArmorMaterial.LEATHER)
         {
-            throw new UnsupportedOperationException("Can\'t dye non-leather!");
+            throw new UnsupportedOperationException("Can't dye non-leather!");
         }
         else
         {
@@ -212,7 +212,7 @@ public class ItemArmor extends Item
      */
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair)
     {
-        return this.material.getRepairItem() == repair.getItem() ? true : super.getIsRepairable(toRepair, repair);
+        return this.material.getRepairItem() == repair.getItem() || super.getIsRepairable(toRepair, repair);
     }
 
     /**
@@ -232,20 +232,23 @@ public class ItemArmor extends Item
         return itemStackIn;
     }
 
-    public static enum ArmorMaterial
+    public enum ArmorMaterial
     {
         LEATHER("leather", 5, new int[]{1, 3, 2, 1}, 15),
         CHAIN("chainmail", 15, new int[]{2, 5, 4, 1}, 12),
         IRON("iron", 15, new int[]{2, 6, 5, 2}, 9),
         GOLD("gold", 7, new int[]{2, 5, 3, 1}, 25),
-        DIAMOND("diamond", 33, new int[]{3, 8, 6, 3}, 10);
+        DIAMOND("diamond", 33, new int[]{3, 8, 6, 3}, 10),
+        STEEL("steel", 170, new int[]{2, 6, 5, 2}, 10),
+        AMETHYST("amethyst", 264, new int[]{3, 8, 6, 3}, 0);
+
 
         private final String name;
         private final int maxDamageFactor;
         private final int[] damageReductionAmountArray;
         private final int enchantability;
 
-        private ArmorMaterial(String name, int maxDamage, int[] reductionAmounts, int enchantability)
+        ArmorMaterial(String name, int maxDamage, int[] reductionAmounts, int enchantability)
         {
             this.name = name;
             this.maxDamageFactor = maxDamage;
@@ -270,7 +273,7 @@ public class ItemArmor extends Item
 
         public Item getRepairItem()
         {
-            return this == LEATHER ? Items.leather : (this == CHAIN ? Items.iron_ingot : (this == GOLD ? Items.gold_ingot : (this == IRON ? Items.iron_ingot : (this == DIAMOND ? Items.diamond : null))));
+            return this == LEATHER ? Items.leather : (this == CHAIN ? Items.iron_ingot : (this == GOLD ? Items.gold_ingot : (this == IRON ? Items.iron_ingot : (this == DIAMOND ? Items.diamond : (this == STEEL ? Items.steel_ingot : (this == AMETHYST ? Items.amethyst : null))))));
         }
 
         public String getName()

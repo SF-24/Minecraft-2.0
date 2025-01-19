@@ -72,8 +72,8 @@ public class ItemModelMesher
 
     public void register(Item item, int meta, ModelResourceLocation location)
     {
-        this.simpleShapes.put(Integer.valueOf(this.getIndex(item, meta)), location);
-        this.simpleShapesCache.put(Integer.valueOf(this.getIndex(item, meta)), this.modelManager.getModel(location));
+        this.simpleShapes.put(this.getIndex(item, meta), location);
+        this.simpleShapesCache.put(this.getIndex(item, meta), this.modelManager.getModel(location));
     }
 
     public void register(Item item, ItemMeshDefinition definition)

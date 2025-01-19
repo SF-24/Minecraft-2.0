@@ -71,7 +71,7 @@ public class EntityMinecartFurnace extends EntityMinecart
      */
     protected double getMaximumSpeed()
     {
-        return 0.2D;
+        return 0.4D;
     }
 
     public void killMinecart(DamageSource source)
@@ -165,7 +165,7 @@ public class EntityMinecartFurnace extends EntityMinecart
         super.writeEntityToNBT(tagCompound);
         tagCompound.setDouble("PushX", this.pushX);
         tagCompound.setDouble("PushZ", this.pushZ);
-        tagCompound.setShort("Fuel", (short)this.fuel);
+        tagCompound.setInteger("Fuel", this.fuel);
     }
 
     /**
@@ -176,7 +176,7 @@ public class EntityMinecartFurnace extends EntityMinecart
         super.readEntityFromNBT(tagCompund);
         this.pushX = tagCompund.getDouble("PushX");
         this.pushZ = tagCompund.getDouble("PushZ");
-        this.fuel = tagCompund.getShort("Fuel");
+        this.fuel = tagCompund.getInteger("Fuel");
     }
 
     protected boolean isMinecartPowered()

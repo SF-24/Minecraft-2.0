@@ -2,12 +2,16 @@ package net.minecraft.entity.item;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProviderEnd;
+
+import java.util.Random;
 
 public class EntityEnderCrystal extends Entity
 {
@@ -101,15 +105,26 @@ public class EntityEnderCrystal extends Entity
             {
                 this.health = 0;
 
-                if (this.health <= 0)
-                {
-                    this.setDead();
+                //if (this.health <= 0)
+                //{
+                this.setDead();
 
-                    if (!this.worldObj.isRemote)
-                    {
-                        this.worldObj.createExplosion((Entity)null, this.posX, this.posY, this.posZ, 6.0F, true);
-                    }
+                if (!this.worldObj.isRemote)
+                {
+                    this.worldObj.createExplosion((Entity)null, this.posX, this.posY, this.posZ, 6.0F, true);
+                    Random random = new Random();
+                    int val = random.nextInt(3);
+                    EntityItem item = new EntityItem(this.worldObj, this.posX, this.posY, this.posZ, new ItemStack(Items.amethyst, val));
+                    if (val > 0) this.worldObj.spawnEntityInWorld(item);
+
+                    int xMultiplier = 1;
+                    int zMultiplier = 1;
+                    if(random.nextInt(2)==1) xMultiplier=-1;
+                    if(random.nextInt(2)==1) zMultiplier=-1;
+
+                    item.setVelocity(1*xMultiplier, 1, 1*zMultiplier);
                 }
+                //}
             }
 
             return true;

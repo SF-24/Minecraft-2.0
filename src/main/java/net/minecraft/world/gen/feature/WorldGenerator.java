@@ -1,6 +1,8 @@
 package net.minecraft.world.gen.feature;
 
 import java.util.Random;
+
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
@@ -31,6 +33,7 @@ public abstract class WorldGenerator
 
     protected void setBlockAndNotifyAdequately(World worldIn, BlockPos pos, IBlockState state)
     {
+        this.state=state;
         if (this.doBlockNotify)
         {
             worldIn.setBlockState(pos, state, 3);
@@ -39,5 +42,11 @@ public abstract class WorldGenerator
         {
             worldIn.setBlockState(pos, state, 2);
         }
+    }
+
+    private IBlockState state = null;
+
+    public Block getBlock() {
+        return state.getBlock();
     }
 }

@@ -7,17 +7,7 @@ import net.minecraft.block.BlockBed;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.model.ModelChicken;
-import net.minecraft.client.model.ModelCow;
-import net.minecraft.client.model.ModelHorse;
-import net.minecraft.client.model.ModelOcelot;
-import net.minecraft.client.model.ModelPig;
-import net.minecraft.client.model.ModelRabbit;
-import net.minecraft.client.model.ModelSheep2;
-import net.minecraft.client.model.ModelSlime;
-import net.minecraft.client.model.ModelSquid;
-import net.minecraft.client.model.ModelWolf;
-import net.minecraft.client.model.ModelZombie;
+import net.minecraft.client.model.*;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderGlobal;
@@ -84,14 +74,7 @@ import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.EntityWolf;
-import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.entity.projectile.EntityEgg;
-import net.minecraft.entity.projectile.EntityFishHook;
-import net.minecraft.entity.projectile.EntityLargeFireball;
-import net.minecraft.entity.projectile.EntityPotion;
-import net.minecraft.entity.projectile.EntitySmallFireball;
-import net.minecraft.entity.projectile.EntitySnowball;
-import net.minecraft.entity.projectile.EntityWitherSkull;
+import net.minecraft.entity.projectile.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.util.AxisAlignedBB;
@@ -179,6 +162,7 @@ public class RenderManager
         this.entityRenderMap.put(EntityEnderEye.class, new RenderSnowball(this, Items.ender_eye, itemRendererIn));
         this.entityRenderMap.put(EntityEgg.class, new RenderSnowball(this, Items.egg, itemRendererIn));
         this.entityRenderMap.put(EntityPotion.class, new RenderPotion(this, itemRendererIn));
+        this.entityRenderMap.put(EntityGrenade.class, new RenderSnowball(this, Items.holy_grenade, itemRendererIn));
         this.entityRenderMap.put(EntityExpBottle.class, new RenderSnowball(this, Items.experience_bottle, itemRendererIn));
         this.entityRenderMap.put(EntityFireworkRocket.class, new RenderSnowball(this, Items.fireworks, itemRendererIn));
         this.entityRenderMap.put(EntityLargeFireball.class, new RenderFireball(this, 2.0F));
@@ -196,9 +180,9 @@ public class RenderManager
         this.entityRenderMap.put(EntityFishHook.class, new RenderFish(this));
         this.entityRenderMap.put(EntityHorse.class, new RenderHorse(this, new ModelHorse(), 0.75F));
         this.entityRenderMap.put(EntityLightningBolt.class, new RenderLightningBolt(this));
-        this.playerRenderer = new RenderPlayer(this);
+        this.playerRenderer = new RenderPlayer(this, false, ModelPlayerEnum.HUMAN);
         this.skinMap.put("default", this.playerRenderer);
-        this.skinMap.put("slim", new RenderPlayer(this, true));
+        this.skinMap.put("slim", new RenderPlayer(this, true, ModelPlayerEnum.HUMAN));
     }
 
     public void setRenderPosition(double renderPosXIn, double renderPosYIn, double renderPosZIn)
@@ -428,7 +412,7 @@ public class RenderManager
 
     /**
      * Renders the bounding box around an entity when F3+B is pressed
-     *  
+     *
      * @param x X position where to render the debug bounding box
      * @param y Y position where to render the debug bounding box
      * @param z Z position where to render the debug bounding box

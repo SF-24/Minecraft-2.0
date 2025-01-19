@@ -25,6 +25,7 @@ public class WorldGenCanopyTree extends WorldGenAbstractTree
 
     public boolean generate(World worldIn, Random rand, BlockPos position)
     {
+        position=position.down(2);
         int i = rand.nextInt(3) + rand.nextInt(2) + 6;
         int j = position.getX();
         int k = position.getY();

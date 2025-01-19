@@ -25,13 +25,7 @@ import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.entity.projectile.EntityEgg;
-import net.minecraft.entity.projectile.EntityFireball;
-import net.minecraft.entity.projectile.EntityFishHook;
-import net.minecraft.entity.projectile.EntityPotion;
-import net.minecraft.entity.projectile.EntitySmallFireball;
-import net.minecraft.entity.projectile.EntitySnowball;
+import net.minecraft.entity.projectile.*;
 import net.minecraft.network.Packet;
 import net.minecraft.util.IntHashMap;
 import net.minecraft.util.ReportedException;
@@ -168,6 +162,12 @@ public class EntityTracker
         else if (entityIn instanceof EntityEnderCrystal)
         {
             this.addEntityToTracker(entityIn, 256, Integer.MAX_VALUE, false);
+        }
+
+        // EntityGrenade | Grenade : in Entity tracker | EntityTracker
+        else if (entityIn instanceof EntityGrenade)
+        {
+            this.addEntityToTracker(entityIn, 64, 10, true);
         }
     }
 

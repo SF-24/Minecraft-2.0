@@ -84,7 +84,7 @@ public class BiomeCache
 
     public class Block
     {
-        public float[] rainfallValues = new float[256];
+        //public float[] rainfallValues = new float[256];
         public BiomeGenBase[] biomes = new BiomeGenBase[256];
         public int xPosition;
         public int zPosition;
@@ -94,7 +94,7 @@ public class BiomeCache
         {
             this.xPosition = x;
             this.zPosition = z;
-            BiomeCache.this.chunkManager.getRainfall(this.rainfallValues, x << 4, z << 4, 16, 16);
+            //BiomeCache.this.chunkManager.getRainfall(this.rainfallValues, x << 4, z << 4, 16, 16);
             BiomeCache.this.chunkManager.getBiomeGenAt(this.biomes, x << 4, z << 4, 16, 16, false);
         }
 

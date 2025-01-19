@@ -409,9 +409,10 @@ public abstract class EntityMinecart extends Entity implements IWorldNameable
     /**
      * Get's the maximum speed for a minecart
      */
+    // modified from 0.4D
     protected double getMaximumSpeed()
     {
-        return 0.4D;
+        return 0.8D;
     }
 
     /**

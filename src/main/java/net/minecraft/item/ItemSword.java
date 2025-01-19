@@ -53,6 +53,16 @@ public class ItemSword extends Item
      */
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
     {
+        if(this.material.equals(ToolMaterial.HOLY_WEAK) && target.isEntityUndead()) {
+            target.setFire(5);
+            target.addVelocity(0, 1, 0);
+            target.setHealth(target.getHealth()-2);
+        } else if(this.material.equals(ToolMaterial.AETHER_LIGHT)) {
+            target.setInWeb();
+        }
+
+
+
         stack.damageItem(1, attacker);
         return true;
     }
@@ -132,7 +142,7 @@ public class ItemSword extends Item
      */
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair)
     {
-        return this.material.getRepairItem() == repair.getItem() ? true : super.getIsRepairable(toRepair, repair);
+        return this.material.getRepairItem() == repair.getItem() || super.getIsRepairable(toRepair, repair);
     }
 
     public Multimap<String, AttributeModifier> getItemAttributeModifiers()

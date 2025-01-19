@@ -132,7 +132,7 @@ public class BlockAnvil extends BlockFalling
      */
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta & 3)).withProperty(DAMAGE, Integer.valueOf((meta & 15) >> 2));
+        return this.getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta & 3)).withProperty(DAMAGE, (meta & 15) >> 2);
     }
 
     /**
@@ -142,7 +142,7 @@ public class BlockAnvil extends BlockFalling
     {
         int i = 0;
         i = i | ((EnumFacing)state.getValue(FACING)).getHorizontalIndex();
-        i = i | ((Integer)state.getValue(DAMAGE)).intValue() << 2;
+        i = i | (Integer) state.getValue(DAMAGE) << 2;
         return i;
     }
 

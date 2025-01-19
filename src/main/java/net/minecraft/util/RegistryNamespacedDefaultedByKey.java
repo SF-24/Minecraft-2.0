@@ -17,14 +17,15 @@ public class RegistryNamespacedDefaultedByKey<K, V> extends RegistryNamespaced<K
         this.defaultValueKey = defaultValueKeyIn;
     }
 
-    public void register(int id, K key, V value)
+    // register texture and values
+    public void register(int id, K textureKey, V value)
     {
-        if (this.defaultValueKey.equals(key))
+        if (this.defaultValueKey.equals(textureKey))
         {
             this.defaultValue = value;
         }
 
-        super.register(id, key, value);
+        super.register(id, textureKey, value);
     }
 
     /**

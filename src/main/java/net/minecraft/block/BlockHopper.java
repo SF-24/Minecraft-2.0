@@ -35,12 +35,13 @@ public class BlockHopper extends BlockContainer
             return p_apply_1_ != EnumFacing.UP;
         }
     });
+
     public static final PropertyBool ENABLED = PropertyBool.create("enabled");
 
     public BlockHopper()
     {
         super(Material.iron, MapColor.stoneColor);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.DOWN).withProperty(ENABLED, Boolean.valueOf(true)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.DOWN).withProperty(ENABLED, Boolean.TRUE));
         this.setCreativeTab(CreativeTabs.tabRedstone);
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
     }
@@ -82,7 +83,7 @@ public class BlockHopper extends BlockContainer
             enumfacing = EnumFacing.DOWN;
         }
 
-        return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(ENABLED, Boolean.valueOf(true));
+        return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(ENABLED, Boolean.TRUE);
     }
 
     /**

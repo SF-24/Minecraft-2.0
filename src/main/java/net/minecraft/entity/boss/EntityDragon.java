@@ -12,10 +12,14 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityMultiPart;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.item.EntityEnderCrystal;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
@@ -639,6 +643,9 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
                     int k = EntityXPOrb.getXPSplit(i);
                     i -= k;
                     this.worldObj.spawnEntityInWorld(new EntityXPOrb(this.worldObj, this.posX, this.posY, this.posZ, k));
+                    if (this.deathTicks % 10 == 0) {
+                        this.worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, this.posX, this.posY, this.posZ, new ItemStack(Items.amethyst)));
+                    }
                 }
             }
 
@@ -778,4 +785,5 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
     {
         return 5.0F;
     }
+
 }

@@ -31,7 +31,7 @@ public class ItemPotion extends Item
 
     public ItemPotion()
     {
-        this.setMaxStackSize(1);
+        this.setMaxStackSize(4 /* WAS 1*/);
         this.setHasSubtypes(true);
         this.setMaxDamage(0);
         this.setCreativeTab(CreativeTabs.tabBrewing);
@@ -112,12 +112,12 @@ public class ItemPotion extends Item
 
         if (!playerIn.capabilities.isCreativeMode)
         {
-            if (stack.stackSize <= 0)
-            {
+            if(stack.stackSize<=0) {
                 return new ItemStack(Items.glass_bottle);
+            } else {
+                playerIn.inventory.addItemStackToInventory(new ItemStack(Items.glass_bottle));
+                return stack;
             }
-
-            playerIn.inventory.addItemStackToInventory(new ItemStack(Items.glass_bottle));
         }
 
         return stack;
@@ -128,7 +128,7 @@ public class ItemPotion extends Item
      */
     public int getMaxItemUseDuration(ItemStack stack)
     {
-        return 32;
+        return 20;
     }
 
     /**

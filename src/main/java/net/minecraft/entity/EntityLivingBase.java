@@ -854,7 +854,7 @@ public abstract class EntityLivingBase extends Entity
 
     public void setHealth(float health)
     {
-        this.dataWatcher.updateObject(6, Float.valueOf(MathHelper.clamp_float(health, 0.0F, this.getMaxHealth())));
+        this.dataWatcher.updateObject(6, MathHelper.clamp_float(health, 0.0F, this.getMaxHealth()));
     }
 
     /**
@@ -1306,6 +1306,10 @@ public abstract class EntityLivingBase extends Entity
         return (EntityLivingBase)(this._combatTracker.func_94550_c() != null ? this._combatTracker.func_94550_c() : (this.attackingPlayer != null ? this.attackingPlayer : (this.entityLivingToAttack != null ? this.entityLivingToAttack : null)));
     }
 
+    public void setMaxHealth(int newMaxHealth) {
+        setEntityAttribute(SharedMonsterAttributes.maxHealth,newMaxHealth);
+    }
+
     public final float getMaxHealth()
     {
         return (float)this.getEntityAttribute(SharedMonsterAttributes.maxHealth).getAttributeValue();
@@ -1425,6 +1429,13 @@ public abstract class EntityLivingBase extends Entity
     {
         return this.getAttributeMap().getAttributeInstance(attribute);
     }
+
+    public void setEntityAttribute(IAttribute attribute, double value)
+    {
+        this.getAttributeMap().getAttributeInstance(attribute).setBaseValue(value);
+        this.getAttributeMap().registerAttribute(attribute);
+    }
+
 
     public BaseAttributeMap getAttributeMap()
     {

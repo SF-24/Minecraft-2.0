@@ -31,7 +31,7 @@ public class BlockOre extends Block
      */
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
-        return this == Blocks.coal_ore ? Items.coal : (this == Blocks.diamond_ore ? Items.diamond : (this == Blocks.lapis_ore ? Items.dye : (this == Blocks.emerald_ore ? Items.emerald : (this == Blocks.quartz_ore ? Items.quartz : Item.getItemFromBlock(this)))));
+        return this == Blocks.coal_ore ? Items.coal : (this == Blocks.diamond_ore ? Items.diamond : (this == Blocks.lapis_ore ? Items.dye : (this == Blocks.emerald_ore ? Items.emerald : (this == Blocks.quartz_ore ? Items.quartz : (this == Blocks.nether_ash_ore ? Items.nether_ash: (this == Blocks.amethyst_crystal ? Items.amethyst: (this == Blocks.ruby_ore ? Items.ruby: Item.getItemFromBlock(this))))))));
     }
 
     /**
@@ -49,14 +49,18 @@ public class BlockOre extends Block
     {
         if (fortune > 0 && Item.getItemFromBlock(this) != this.getItemDropped((IBlockState)this.getBlockState().getValidStates().iterator().next(), random, fortune))
         {
-            int i = random.nextInt(fortune + 2) - 1;
+        // calculate the extra amount of drops, diamonds etc.
+        // for stuff like lapis or redstone, a seperate calculation takes place
 
-            if (i < 0)
-            {
-                i = 0;
+            int fortuneProbability = 5 + (15*fortune);
+            int randomPercentile = random.nextInt(100); //from 0 to 99
+            int dropModifier = 0;
+
+            if(randomPercentile<fortuneProbability) {
+                dropModifier = 1;
             }
 
-            return this.quantityDropped(random) * (i + 1);
+            return this.quantityDropped(random) * (dropModifier + 1);
         }
         else
         {
@@ -76,6 +80,14 @@ public class BlockOre extends Block
             int i = 0;
 
             if (this == Blocks.coal_ore)
+            {
+                i = MathHelper.getRandomIntegerInRange(worldIn.rand, 0, 2);
+            }
+            if (this == Blocks.nether_ash_ore)
+            {
+                i = MathHelper.getRandomIntegerInRange(worldIn.rand, 0, 2);
+            }
+            if (this == Blocks.ruby_ore)
             {
                 i = MathHelper.getRandomIntegerInRange(worldIn.rand, 0, 2);
             }

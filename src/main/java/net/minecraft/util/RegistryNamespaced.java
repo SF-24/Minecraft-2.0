@@ -15,10 +15,11 @@ public class RegistryNamespaced<K, V> extends RegistrySimple<K, V> implements IO
         this.inverseObjectRegistry = ((BiMap)this.registryObjects).inverse();
     }
 
-    public void register(int id, K key, V value)
+    // puts in block/item/etc. and texture and value in txtr registry
+    public void register(int id, K textureKey, V value)
     {
         this.underlyingIntegerMap.put(value, id);
-        this.putObject(key, value);
+        this.putObject(textureKey, value);
     }
 
     protected Map<K, V> createUnderlyingMap()

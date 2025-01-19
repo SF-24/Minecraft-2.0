@@ -105,8 +105,8 @@ public class NetworkPlayerInfo
         {
             this.loadPlayerTextures();
         }
-
-        return this.locationCape;
+        return null;
+//        return Objects.firstNonNull(this.locationSkin, DefaultPlayerSkin.getDefaultCape(this.gameProfile.getId()));
     }
 
     public ScorePlayerTeam getPlayerTeam()

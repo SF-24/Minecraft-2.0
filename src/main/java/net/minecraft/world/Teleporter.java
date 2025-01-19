@@ -4,6 +4,8 @@ import com.google.common.collect.Lists;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockPortal;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.block.state.pattern.BlockPattern;
@@ -29,14 +31,18 @@ public class Teleporter
         this.random = new Random(worldIn.getSeed());
     }
 
-    public void placeInPortal(Entity entityIn, float rotationYaw)
+    // place portal
+    public void placeInPortal(Entity entityIn, float rotationYaw, boolean aether)
     {
+        Block frame = Blocks.obsidian;
+        if(aether) frame=Blocks.glowstone;
+
         if (this.worldServerInstance.provider.getDimensionId() != 1)
         {
-            if (!this.placeInExistingPortal(entityIn, rotationYaw))
+            if (!this.placeInExistingPortal(entityIn, rotationYaw, aether))
             {
-                this.makePortal(entityIn);
-                this.placeInExistingPortal(entityIn, rotationYaw);
+                this.makePortal(entityIn, aether);
+                this.placeInExistingPortal(entityIn, rotationYaw, aether);
             }
         }
         else
@@ -57,18 +63,22 @@ public class Teleporter
                         int j2 = j + l1;
                         int k2 = k + k1 * i1 - j1 * l;
                         boolean flag = l1 < 0;
-                        this.worldServerInstance.setBlockState(new BlockPos(i2, j2, k2), flag ? Blocks.obsidian.getDefaultState() : Blocks.air.getDefaultState());
+
+                        this.worldServerInstance.setBlockState(new BlockPos(i2, j2, k2), flag ? frame.getDefaultState() : Blocks.air.getDefaultState());
                     }
                 }
             }
 
             entityIn.setLocationAndAngles((double)i, (double)j, (double)k, entityIn.rotationYaw, 0.0F);
-            entityIn.motionX = entityIn.motionY = entityIn.motionZ = 0.0D;
+            entityIn.motionX = entityIn.    motionY = entityIn.motionZ = 0.0D;
         }
     }
 
-    public boolean placeInExistingPortal(Entity entityIn, float rotationYaw)
+    public boolean placeInExistingPortal(Entity entityIn, float rotationYaw, boolean aether)
     {
+        Block portal = Blocks.portal;
+        if(aether) portal = Blocks.aether_portal;
+
         int i = 128;
         double d0 = -1.0D;
         int j = MathHelper.floor_double(entityIn.posX);
@@ -99,9 +109,9 @@ public class Teleporter
                     {
                         blockpos2 = blockpos1.down();
 
-                        if (this.worldServerInstance.getBlockState(blockpos1).getBlock() == Blocks.portal)
+                        if (this.worldServerInstance.getBlockState(blockpos1).getBlock() == portal)
                         {
-                            while (this.worldServerInstance.getBlockState(blockpos2 = blockpos1.down()).getBlock() == Blocks.portal)
+                            while (this.worldServerInstance.getBlockState(blockpos2 = blockpos1.down()).getBlock() == portal)
                             {
                                 blockpos1 = blockpos2;
                             }
@@ -189,8 +199,20 @@ public class Teleporter
         }
     }
 
-    public boolean makePortal(Entity entityIn)
+    // make a portal
+    public boolean makePortal(Entity entityIn, boolean aether)
     {
+        final Block portal;
+        final Block frame;
+
+        if(aether) {
+            portal=Blocks.aether_portal;
+            frame=Blocks.glowstone;
+        } else {
+            portal=Blocks.portal;
+            frame=Blocks.obsidian;
+        }
+
         int i = 16;
         double d0 = -1.0D;
         int j = MathHelper.floor_double(entityIn.posX);
@@ -354,13 +376,13 @@ public class Teleporter
                         int k10 = k2 + k8;
                         int k11 = k6 + (l7 - 1) * i3 - j7 * l6;
                         boolean flag = k8 < 0;
-                        this.worldServerInstance.setBlockState(new BlockPos(k9, k10, k11), flag ? Blocks.obsidian.getDefaultState() : Blocks.air.getDefaultState());
+                        this.worldServerInstance.setBlockState(new BlockPos(k9, k10, k11), flag ? frame.getDefaultState() : Blocks.air.getDefaultState());
                     }
                 }
             }
         }
 
-        IBlockState iblockstate = Blocks.portal.getDefaultState().withProperty(BlockPortal.AXIS, l6 != 0 ? EnumFacing.Axis.X : EnumFacing.Axis.Z);
+        IBlockState iblockstate = portal.getDefaultState().withProperty(BlockPortal.AXIS, l6 != 0 ? EnumFacing.Axis.X : EnumFacing.Axis.Z);
 
         for (int i8 = 0; i8 < 4; ++i8)
         {
@@ -372,7 +394,7 @@ public class Teleporter
                     int l11 = k2 + l9;
                     int k12 = k6 + (l8 - 1) * i3;
                     boolean flag1 = l8 == 0 || l8 == 3 || l9 == -1 || l9 == 3;
-                    this.worldServerInstance.setBlockState(new BlockPos(l10, l11, k12), flag1 ? Blocks.obsidian.getDefaultState() : iblockstate, 2);
+                    this.worldServerInstance.setBlockState(new BlockPos(l10, l11, k12), flag1 ? frame.getDefaultState() : iblockstate, 2);
                 }
             }
 
@@ -406,7 +428,7 @@ public class Teleporter
             while (iterator.hasNext())
             {
                 Long olong = (Long)iterator.next();
-                Teleporter.PortalPosition teleporter$portalposition = (Teleporter.PortalPosition)this.destinationCoordinateCache.getValueByKey(olong.longValue());
+                Teleporter.PortalPosition teleporter$portalposition = (Teleporter.PortalPosition)this.destinationCoordinateCache.getValueByKey(olong);
 
                 if (teleporter$portalposition == null || teleporter$portalposition.lastUpdateTime < i)
                 {

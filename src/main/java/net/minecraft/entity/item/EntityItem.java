@@ -142,7 +142,11 @@ public class EntityItem extends Entity
 
             this.handleWaterMovement();
 
-            if (!this.worldObj.isRemote && this.age >= 6000)
+            /**
+             * Despawning item mechanic
+             * Default: 6000 (5 mins)
+             */
+            if (!this.worldObj.isRemote && this.age >= 36000)
             {
                 this.setDead();
             }

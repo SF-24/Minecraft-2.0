@@ -1,5 +1,6 @@
 package net.minecraft.block;
 
+import java.awt.*;
 import java.util.Random;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -15,6 +16,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeGenPlains;
 
 public class BlockReed extends Block
 {
@@ -146,7 +148,7 @@ public class BlockReed extends Block
 
     public int colorMultiplier(IBlockAccess worldIn, BlockPos pos, int renderPass)
     {
-        return worldIn.getBiomeGenForCoords(pos).getGrassColorAtPos(pos);
+        return 16777215; //worldIn.getBiomeGenForCoords(pos).getGrassColorAtPos(pos);
     }
 
     public EnumWorldBlockLayer getBlockLayer()

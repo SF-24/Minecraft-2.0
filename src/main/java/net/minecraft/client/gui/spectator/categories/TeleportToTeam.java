@@ -102,6 +102,7 @@ public class TeleportToTeam implements ISpectatorMenuView, ISpectatorMenuObject
             }
             else
             {
+
                 this.field_178677_c = DefaultPlayerSkin.getDefaultSkinLegacy();
             }
         }

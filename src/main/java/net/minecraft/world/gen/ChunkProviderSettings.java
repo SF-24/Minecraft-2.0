@@ -211,7 +211,7 @@ public class ChunkProviderSettings
         public int lavaLakeChance = 80;
         public boolean useLavaOceans = false;
         public int fixedBiome = -1;
-        public int biomeSize = 4;
+        public int biomeSize = 2; // was 4
         public int riverSize = 4;
         public int dirtSize = 33;
         public int dirtCount = 10;
@@ -252,7 +252,7 @@ public class ChunkProviderSettings
         public int diamondSize = 8;
         public int diamondCount = 1;
         public int diamondMinHeight = 0;
-        public int diamondMaxHeight = 16;
+        public int diamondMaxHeight = 12; // was 16
         public int lapisSize = 7;
         public int lapisCount = 1;
         public int lapisCenterHeight = 16;
@@ -344,7 +344,7 @@ public class ChunkProviderSettings
             this.andesiteMinHeight = 0;
             this.andesiteMaxHeight = 80;
             this.coalSize = 17;
-            this.coalCount = 20;
+            this.coalCount = 15; // from 20
             this.coalMinHeight = 0;
             this.coalMaxHeight = 128;
             this.ironSize = 9;
@@ -362,7 +362,7 @@ public class ChunkProviderSettings
             this.diamondSize = 8;
             this.diamondCount = 1;
             this.diamondMinHeight = 0;
-            this.diamondMaxHeight = 16;
+            this.diamondMaxHeight = 12; // was 16
             this.lapisSize = 7;
             this.lapisCount = 1;
             this.lapisCenterHeight = 16;

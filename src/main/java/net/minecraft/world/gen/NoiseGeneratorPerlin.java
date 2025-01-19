@@ -25,7 +25,7 @@ public class NoiseGeneratorPerlin extends NoiseGenerator
 
         for (int i = 0; i < this.field_151602_b; ++i)
         {
-            d0 += this.field_151603_a[i].func_151605_a(p_151601_1_ * d1, p_151601_3_ * d1) / d1;
+            d0 += this.field_151603_a[i].getValue(p_151601_1_ * d1, p_151601_3_ * d1) / d1;
             d1 /= 2.0D;
         }
 
@@ -56,7 +56,7 @@ public class NoiseGeneratorPerlin extends NoiseGenerator
 
         for (int j = 0; j < this.field_151602_b; ++j)
         {
-            this.field_151603_a[j].func_151606_a(p_151600_1_, p_151600_2_, p_151600_4_, p_151600_6_, p_151600_7_, p_151600_8_ * d0 * d1, p_151600_10_ * d0 * d1, 0.55D / d1);
+            this.field_151603_a[j].add(p_151600_1_, p_151600_2_, p_151600_4_, p_151600_6_, p_151600_7_, p_151600_8_ * d0 * d1, p_151600_10_ * d0 * d1, 0.55D / d1);
             d0 *= p_151600_12_;
             d1 *= p_151600_14_;
         }

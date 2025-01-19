@@ -264,7 +264,7 @@ public class BlockPortal extends BlockBreakable
     {
         EnumFacing.Axis enumfacing$axis = EnumFacing.Axis.Z;
         BlockPortal.Size blockportal$size = new BlockPortal.Size(p_181089_1_, p_181089_2_, EnumFacing.Axis.X);
-        LoadingCache<BlockPos, BlockWorldState> loadingcache = BlockPattern.func_181627_a(p_181089_1_, true);
+        LoadingCache<BlockPos, BlockWorldState> loadingcache = BlockPattern.func_loadingcache(p_181089_1_, true);
 
         if (!blockportal$size.func_150860_b())
         {

@@ -220,6 +220,7 @@ public abstract class Entity implements ICommandSender
 
     /** Whether the entity is inside a Portal */
     protected boolean inPortal;
+    protected boolean inAetherPortal;
     protected int portalCounter;
 
     /** Which dimension the player is in (-1 = the Nether, 0 = normal world) */
@@ -430,7 +431,7 @@ public abstract class Entity implements ICommandSender
             MinecraftServer minecraftserver = ((WorldServer)this.worldObj).getMinecraftServer();
             int i = this.getMaxInPortalTime();
 
-            if (this.inPortal)
+            if (this.inPortal || this.inAetherPortal)
             {
                 if (minecraftserver.getAllowNether())
                 {
@@ -438,21 +439,27 @@ public abstract class Entity implements ICommandSender
                     {
                         this.portalCounter = i;
                         this.timeUntilPortal = this.getPortalCooldown();
-                        int j;
+                        int j = 0;
 
-                        if (this.worldObj.provider.getDimensionId() == -1)
-                        {
-                            j = 0;
-                        }
-                        else
-                        {
-                            j = -1;
-                        }
+                        if(inPortal) {
 
+                            if (this.worldObj.provider.getDimensionId() == -1) {
+                                j = 0;
+                            } else {
+                                j = -1;
+                            }
+                        } else if(inAetherPortal) {
+                            if (this.worldObj.provider.getDimensionId() == 2) {
+                                j = 0;
+                            } else {
+                                j = 2;
+                            }
+                        }
                         this.travelToDimension(j);
                     }
 
                     this.inPortal = false;
+                    this.inAetherPortal=false;
                 }
             }
             else
@@ -2073,6 +2080,30 @@ public abstract class Entity implements ICommandSender
             }
 
             this.inPortal = true;
+        }
+    }
+
+    public void setAetherPortal(BlockPos pos)
+    {
+        if (this.timeUntilPortal > 0)
+        {
+            this.timeUntilPortal = this.getPortalCooldown();
+        }
+        else
+        {
+            if (!this.worldObj.isRemote && !pos.equals(this.lastPortalPos))
+            {
+                this.lastPortalPos = pos;
+                BlockPattern.PatternHelper blockpattern$patternhelper = Blocks.aether_portal.func_181089_f(this.worldObj, pos);
+                double d0 = blockpattern$patternhelper.getFinger().getAxis() == EnumFacing.Axis.X ? (double)blockpattern$patternhelper.getPos().getZ() : (double)blockpattern$patternhelper.getPos().getX();
+                double d1 = blockpattern$patternhelper.getFinger().getAxis() == EnumFacing.Axis.X ? this.posZ : this.posX;
+                d1 = Math.abs(MathHelper.func_181160_c(d1 - (double)(blockpattern$patternhelper.getFinger().rotateY().getAxisDirection() == EnumFacing.AxisDirection.NEGATIVE ? 1 : 0), d0, d0 - (double)blockpattern$patternhelper.func_181118_d()));
+                double d2 = MathHelper.func_181160_c(this.posY - 1.0D, (double)blockpattern$patternhelper.getPos().getY(), (double)(blockpattern$patternhelper.getPos().getY() - blockpattern$patternhelper.func_181119_e()));
+                this.lastPortalVec = new Vec3(d1, d2, 0.0D);
+                this.teleportDirection = blockpattern$patternhelper.getFinger();
+            }
+
+            this.inAetherPortal = true;
         }
     }
 

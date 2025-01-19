@@ -9,7 +9,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class RenderBiped<T extends EntityLiving> extends RenderLiving<T>
 {
-    private static final ResourceLocation DEFAULT_RES_LOC = new ResourceLocation("textures/entity/steve.png");
+    private static final ResourceLocation DEFAULT_RES_LOC = new ResourceLocation("textures/entity/player/steve.png");
     protected ModelBiped modelBipedMain;
     protected float field_77070_b;
 

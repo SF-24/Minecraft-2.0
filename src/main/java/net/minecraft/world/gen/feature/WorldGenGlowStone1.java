@@ -15,7 +15,7 @@ public class WorldGenGlowStone1 extends WorldGenerator
         {
             return false;
         }
-        else if (worldIn.getBlockState(position.up()).getBlock() != Blocks.netherrack)
+        else if (worldIn.getBlockState(position.up()).getBlock() != Blocks.netherrack && worldIn.getBlockState(position.up()).getBlock() != Blocks.stone)
         {
             return false;
         }

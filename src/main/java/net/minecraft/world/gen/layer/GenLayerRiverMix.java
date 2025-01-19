@@ -1,5 +1,6 @@
 package net.minecraft.world.gen.layer;
 
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.biome.BiomeGenBase;
 
 public class GenLayerRiverMix extends GenLayer
@@ -37,11 +38,15 @@ public class GenLayerRiverMix extends GenLayer
 
         for (int i = 0; i < areaWidth * areaHeight; ++i)
         {
-            if (aint[i] != BiomeGenBase.ocean.biomeID && aint[i] != BiomeGenBase.deepOcean.biomeID)
+            if (aint[i] != BiomeGenBase.frozenOcean.biomeID && aint[i] != BiomeGenBase.ocean.biomeID && aint[i] != BiomeGenBase.deepOcean.biomeID)
             {
                 if (aint1[i] == BiomeGenBase.river.biomeID)
                 {
-                    if (aint[i] == BiomeGenBase.icePlains.biomeID)
+                    // custom river code
+                    BiomeGenBase biome = BiomeGenBase.getBiome(aint[i]);
+
+                    //if (aint[i] == BiomeGenBase.icePlains.biomeID)
+                    if(biome.temperature < 0.15F)
                     {
                         aint2[i] = BiomeGenBase.frozenRiver.biomeID;
                     }

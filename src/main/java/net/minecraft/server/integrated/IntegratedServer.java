@@ -70,7 +70,9 @@ public class IntegratedServer extends MinecraftServer
     protected void loadAllWorlds(String saveName, String worldNameIn, long seed, WorldType type, String worldNameIn2)
     {
         this.convertMapIfNeeded(saveName);
-        this.worldServers = new WorldServer[3];
+
+        // extending the dimension limit
+        this.worldServers = new WorldServer[4];
         this.timeOfLastDimensionTick = new long[this.worldServers.length][100];
         ISaveHandler isavehandler = this.getActiveAnvilConverter().getSaveLoader(saveName, true);
         this.setResourcePackFromWorld(this.getFolderName(), isavehandler);
@@ -85,6 +87,7 @@ public class IntegratedServer extends MinecraftServer
             worldinfo.setWorldName(worldNameIn);
         }
 
+        // dimensional ids, support for the aether
         for (int i = 0; i < this.worldServers.length; ++i)
         {
             int j = 0;
@@ -97,6 +100,9 @@ public class IntegratedServer extends MinecraftServer
             if (i == 2)
             {
                 j = 1;
+            }
+            if(i==3) {
+                j=2;
             }
 
             if (i == 0)

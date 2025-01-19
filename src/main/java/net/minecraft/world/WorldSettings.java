@@ -39,7 +39,7 @@ public final class WorldSettings
 
     public WorldSettings(WorldInfo info)
     {
-        this(info.getSeed(), info.getGameType(), info.isMapFeaturesEnabled(), info.isHardcoreModeEnabled(), info.getTerrainType());
+        this(info.getSeed(), info.getGameType(), info.isMapFeaturesEnabled(), info.isHardcoreModeEnabled(),  info.getTerrainType());
     }
 
     /**

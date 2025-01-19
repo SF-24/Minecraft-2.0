@@ -120,12 +120,14 @@ public class EntitySheep extends EntityAnimal
      */
     protected void dropFewItems(boolean wasRecentlyHit, int lootingModifier)
     {
-        if (!this.getSheared())
+        // sheep does not drop wool on death
+        /*if (!this.getSheared())
         {
             this.entityDropItem(new ItemStack(Item.getItemFromBlock(Blocks.wool), 1, this.getFleeceColor().getMetadata()), 0.0F);
-        }
+        }*/
 
-        int i = this.rand.nextInt(2) + 1 + this.rand.nextInt(1 + lootingModifier);
+        // reduced looting effect on drops -> 50% - level
+        int i = this.rand.nextInt(2) + 1 + this.rand.nextInt(lootingModifier+1);
 
         for (int j = 0; j < i; ++j)
         {

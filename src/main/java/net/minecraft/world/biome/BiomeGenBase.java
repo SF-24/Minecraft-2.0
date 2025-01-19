@@ -3,11 +3,6 @@ package net.minecraft.world.biome;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
 import net.minecraft.block.BlockFlower;
 import net.minecraft.block.BlockSand;
 import net.minecraft.block.BlockTallGrass;
@@ -15,20 +10,8 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntitySlime;
-import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.entity.monster.EntityWitch;
-import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.passive.EntityBat;
-import net.minecraft.entity.passive.EntityChicken;
-import net.minecraft.entity.passive.EntityCow;
-import net.minecraft.entity.passive.EntityPig;
-import net.minecraft.entity.passive.EntityRabbit;
-import net.minecraft.entity.passive.EntitySheep;
-import net.minecraft.entity.passive.EntitySquid;
+import net.minecraft.entity.monster.*;
+import net.minecraft.entity.passive.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
@@ -38,15 +21,11 @@ import net.minecraft.world.ColorizerGrass;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
-import net.minecraft.world.gen.feature.WorldGenAbstractTree;
-import net.minecraft.world.gen.feature.WorldGenBigTree;
-import net.minecraft.world.gen.feature.WorldGenDoublePlant;
-import net.minecraft.world.gen.feature.WorldGenSwamp;
-import net.minecraft.world.gen.feature.WorldGenTallGrass;
-import net.minecraft.world.gen.feature.WorldGenTrees;
-import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraft.world.gen.feature.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.*;
 
 public abstract class BiomeGenBase
 {
@@ -60,15 +39,17 @@ public abstract class BiomeGenBase
     protected static final BiomeGenBase.Height height_LowHills = new BiomeGenBase.Height(0.45F, 0.3F);
     protected static final BiomeGenBase.Height height_HighPlateaus = new BiomeGenBase.Height(1.5F, 0.025F);
     protected static final BiomeGenBase.Height height_MidHills = new BiomeGenBase.Height(1.0F, 0.5F);
+    protected static final BiomeGenBase.Height height_HighHills = new BiomeGenBase.Height(1.5F, 0.85F);
     protected static final BiomeGenBase.Height height_Shores = new BiomeGenBase.Height(0.0F, 0.025F);
     protected static final BiomeGenBase.Height height_RockyWaters = new BiomeGenBase.Height(0.1F, 0.8F);
     protected static final BiomeGenBase.Height height_LowIslands = new BiomeGenBase.Height(0.2F, 0.3F);
-    protected static final BiomeGenBase.Height height_PartiallySubmerged = new BiomeGenBase.Height(-0.2F, 0.1F);
+    protected static final BiomeGenBase.Height height_PartiallySubmerged = new BiomeGenBase.Height(-0.3F, 0.15F);
 
     /** An array of all the biomes, indexed by biome id. */
     private static final BiomeGenBase[] biomeList = new BiomeGenBase[256];
     public static final Set<BiomeGenBase> explorationBiomesList = Sets.<BiomeGenBase>newHashSet();
     public static final Map<String, BiomeGenBase> BIOME_ID_MAP = Maps.<String, BiomeGenBase>newHashMap();
+
     public static final BiomeGenBase ocean = (new BiomeGenOcean(0)).setColor(112).setBiomeName("Ocean").setHeight(height_Oceans);
     public static final BiomeGenBase plains = (new BiomeGenPlains(1)).setColor(9286496).setBiomeName("Plains");
     public static final BiomeGenBase desert = (new BiomeGenDesert(2)).setColor(16421912).setBiomeName("Desert").setDisableRain().setTemperatureRainfall(2.0F, 0.0F).setHeight(height_LowPlains);
@@ -81,10 +62,12 @@ public abstract class BiomeGenBase
 
     /** Is the biome used for sky world. */
     public static final BiomeGenBase sky = (new BiomeGenEnd(9)).setColor(8421631).setBiomeName("The End").setDisableRain();
+
+
     public static final BiomeGenBase frozenOcean = (new BiomeGenOcean(10)).setColor(9474208).setBiomeName("FrozenOcean").setEnableSnow().setHeight(height_Oceans).setTemperatureRainfall(0.0F, 0.5F);
     public static final BiomeGenBase frozenRiver = (new BiomeGenRiver(11)).setColor(10526975).setBiomeName("FrozenRiver").setEnableSnow().setHeight(height_ShallowWaters).setTemperatureRainfall(0.0F, 0.5F);
     public static final BiomeGenBase icePlains = (new BiomeGenSnow(12, false)).setColor(16777215).setBiomeName("Ice Plains").setEnableSnow().setTemperatureRainfall(0.0F, 0.5F).setHeight(height_LowPlains);
-    public static final BiomeGenBase iceMountains = (new BiomeGenSnow(13, false)).setColor(10526880).setBiomeName("Ice Mountains").setEnableSnow().setHeight(height_LowHills).setTemperatureRainfall(0.0F, 0.5F);
+    public static final BiomeGenBase iceMountains = (new BiomeGenSnow(13, false)).setColor(10526880).setBiomeName("Ice Mountains").setEnableSnow().setHeight(height_MidHills).setTemperatureRainfall(0.0F, 0.5F);
     public static final BiomeGenBase mushroomIsland = (new BiomeGenMushroomIsland(14)).setColor(16711935).setBiomeName("MushroomIsland").setTemperatureRainfall(0.9F, 1.0F).setHeight(height_LowIslands);
     public static final BiomeGenBase mushroomIslandShore = (new BiomeGenMushroomIsland(15)).setColor(10486015).setBiomeName("MushroomIslandShore").setTemperatureRainfall(0.9F, 1.0F).setHeight(height_Shores);
 
@@ -123,6 +106,25 @@ public abstract class BiomeGenBase
     public static final BiomeGenBase mesa = (new BiomeGenMesa(37, false, false)).setColor(14238997).setBiomeName("Mesa");
     public static final BiomeGenBase mesaPlateau_F = (new BiomeGenMesa(38, false, true)).setColor(11573093).setBiomeName("Mesa Plateau F").setHeight(height_HighPlateaus);
     public static final BiomeGenBase mesaPlateau = (new BiomeGenMesa(39, false, false)).setColor(13274213).setBiomeName("Mesa Plateau").setHeight(height_HighPlateaus);
+
+    // New biomes
+
+    /** Biome used for the aether */
+    public static final BiomeGenBase aether = (new BiomeGenAether(40)).setColor(9474208).setBiomeName("The Aether").setDisableRain();
+
+    public static final BiomeGenBase tropical_swampland = (new BiomeGenSwampTropical(41)).setColor(5470985).setBiomeName("TropicalSwampland").setFillerBlockMetadata(5470985).setHeight(height_PartiallySubmerged).setTemperatureRainfall(0.95F, 0.9F);
+
+    public static final BiomeGenBase volcanic_wasteland = (new BiomeGenWasteland(42)).setColor(12431967).setBiomeName("VolcanicWasteland").setFillerBlockMetadata(12431967).setHeight(height_LowHills).setTemperatureRainfall(1.0F, 0.0F);
+
+    public static final BiomeGenBase stoneMountains = (new BiomeGenMountains(43, false)).setColor(6316128).setBiomeName("Snowy Mountains").setHeight(height_HighHills).setTemperatureRainfall(0.2F, 0.3F);
+
+    public static final BiomeGenBase rainforest = (new BiomeGenJungleRainforest(44, false)).setColor(5470985).setBiomeName("Jungle Rainforest").setFillerBlockMetadata(5470985).setTemperatureRainfall(0.95F, 0.9F);
+
+    public static final BiomeGenBase autumnalForest = (new BiomeGenForestAutumnal(45, 0)).setColor(86776960).setBiomeName("Autumnal Forest");
+
+    public static final BiomeGenBase roofedSwamp = (new BiomeGenSwampDark(46)).setColor(3236668).setBiomeName("Roofed Swamp").setHeight(height_PartiallySubmerged);
+
+
     public static final BiomeGenBase field_180279_ad = ocean;
     protected static final NoiseGeneratorPerlin temperatureNoise;
     protected static final NoiseGeneratorPerlin GRASS_COLOR_NOISE;
@@ -130,6 +132,8 @@ public abstract class BiomeGenBase
     public String biomeName;
     public int color;
     public int field_150609_ah;
+
+    public IBlockState WATER_BLOCK = Blocks.water.getDefaultState();
 
     /** The block expected to be on the top of this biome */
     public IBlockState topBlock = Blocks.grass.getDefaultState();
@@ -204,10 +208,10 @@ public abstract class BiomeGenBase
         this.spawnableCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityChicken.class, 10, 4, 4));
         this.spawnableCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityCow.class, 8, 4, 4));
         this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntitySpider.class, 100, 4, 4));
-        this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntityZombie.class, 100, 4, 4));
-        this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntitySkeleton.class, 100, 4, 4));
+        this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntityZombie.class, 100, 4, 6));
+        this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntitySkeleton.class, 100, 4, 6));
         this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntityCreeper.class, 100, 4, 4));
-        this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntitySlime.class, 100, 4, 4));
+        this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntitySlime.class, 100, 4, 6));
         this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntityEnderman.class, 10, 1, 4));
         this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntityWitch.class, 5, 1, 1));
         this.spawnableWaterCreatureList.add(new BiomeGenBase.SpawnListEntry(EntitySquid.class, 10, 4, 4));
@@ -504,7 +508,7 @@ public abstract class BiomeGenBase
                             }
                             else
                             {
-                                iblockstate = Blocks.water.getDefaultState();
+                                iblockstate = WATER_BLOCK;
                             }
                         }
 
@@ -623,6 +627,12 @@ public abstract class BiomeGenBase
         extremeHills.createMutation();
         extremeHillsPlus.createMutation();
         megaTaiga.createMutatedBiome(megaTaigaHills.biomeID + 128).setBiomeName("Redwood Taiga Hills M");
+        volcanic_wasteland.createMutation();
+        tropical_swampland.createMutation();
+        stoneMountains.createMutation();
+        autumnalForest.createMutation();
+        rainforest.createMutation();
+        roofedSwamp.createMutation();
 
         for (BiomeGenBase biomegenbase : biomeList)
         {
@@ -641,6 +651,15 @@ public abstract class BiomeGenBase
                 }
             }
         }
+
+        // clear biome id map
+        BIOME_ID_MAP.clear();
+        BIOME_ID_MAP.put(jungle.biomeName, jungle);
+        BIOME_ID_MAP.put(plains.biomeName, plains);
+        BIOME_ID_MAP.put(swampland.biomeName, swampland);
+        BIOME_ID_MAP.put(forest.biomeName, forest);
+        BIOME_ID_MAP.put(desert.biomeName, desert);
+        BIOME_ID_MAP.put(ocean.biomeName, ocean);
 
         explorationBiomesList.remove(hell);
         explorationBiomesList.remove(sky);

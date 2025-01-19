@@ -80,7 +80,7 @@ public class BlockPattern
      */
     public BlockPattern.PatternHelper match(World worldIn, BlockPos pos)
     {
-        LoadingCache<BlockPos, BlockWorldState> loadingcache = func_181627_a(worldIn, false);
+        LoadingCache<BlockPos, BlockWorldState> loadingcache = func_loadingcache(worldIn, false);
         int i = Math.max(Math.max(this.palmLength, this.thumbLength), this.fingerLength);
 
         for (BlockPos blockpos : BlockPos.getAllInBox(pos, pos.add(i - 1, i - 1, i - 1)))
@@ -105,9 +105,10 @@ public class BlockPattern
         return null;
     }
 
-    public static LoadingCache<BlockPos, BlockWorldState> func_181627_a(World p_181627_0_, boolean p_181627_1_)
+    // build a portal
+    public static LoadingCache<BlockPos, BlockWorldState> func_loadingcache(World world, boolean p_181627_1_)
     {
-        return CacheBuilder.newBuilder().<BlockPos, BlockWorldState>build(new BlockPattern.CacheLoader(p_181627_0_, p_181627_1_));
+        return CacheBuilder.newBuilder().build(new BlockPattern.CacheLoader(world, p_181627_1_));
     }
 
     /**

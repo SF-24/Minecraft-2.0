@@ -1,15 +1,6 @@
 package net.minecraft.init;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemArmorStand;
-import net.minecraft.item.ItemBow;
-import net.minecraft.item.ItemEmptyMap;
-import net.minecraft.item.ItemEnchantedBook;
-import net.minecraft.item.ItemFishingRod;
-import net.minecraft.item.ItemMap;
-import net.minecraft.item.ItemPotion;
-import net.minecraft.item.ItemShears;
+import net.minecraft.item.*;
 import net.minecraft.util.ResourceLocation;
 
 public class Items
@@ -201,6 +192,34 @@ public class Items
     public static final Item prismarine_shard;
     public static final Item prismarine_crystals;
     public static final Item banner;
+    // new stuff
+    public static final Item steel_sword;
+    public static final Item steel_shovel;
+    public static final Item steel_pickaxe;
+    public static final Item steel_axe;
+    public static final Item steel_hoe;
+    public static final ItemArmor steel_helmet;
+    public static final ItemArmor steel_chestplate;
+    public static final ItemArmor steel_leggings;
+    public static final ItemArmor steel_boots;
+    public static final Item steel_ingot;
+    public static final Item steel_nugget;
+    public static final Item nether_ash;
+    public static final Item amethyst_sword;
+    public static final Item amethyst_shovel;
+    public static final Item amethyst_pickaxe;
+    public static final Item amethyst_axe;
+    public static final Item amethyst_hoe;
+    public static final ItemArmor amethyst_helmet;
+    public static final ItemArmor amethyst_chestplate;
+    public static final ItemArmor amethyst_leggings;
+    public static final ItemArmor amethyst_boots;
+    public static final Item amethyst;
+    public static final Item ruby;
+    public static final ItemGrenade holy_grenade;
+    public static final ItemFood glowing_bread;
+    public static final ItemBackpack ender_pouch;
+    public static final Item record_magnetic_circuit;
 
     private static Item getRegisteredItem(String name)
     {
@@ -399,9 +418,41 @@ public class Items
             record_ward = getRegisteredItem("record_ward");
             record_11 = getRegisteredItem("record_11");
             record_wait = getRegisteredItem("record_wait");
+            record_magnetic_circuit = getRegisteredItem("record_magnetic_circuit");
             prismarine_shard = getRegisteredItem("prismarine_shard");
             prismarine_crystals = getRegisteredItem("prismarine_crystals");
             banner = getRegisteredItem("banner");
+            // New stuff
+            steel_hoe = getRegisteredItem("steel_hoe");
+            steel_sword = getRegisteredItem("steel_sword");
+            steel_shovel = getRegisteredItem("steel_shovel");
+            steel_pickaxe = getRegisteredItem("steel_pickaxe");
+            steel_axe = getRegisteredItem("steel_axe");
+            steel_helmet = (ItemArmor)getRegisteredItem("steel_helmet");
+            steel_chestplate = (ItemArmor)getRegisteredItem("steel_chestplate");
+            steel_leggings = (ItemArmor)getRegisteredItem("steel_leggings");
+            steel_boots = (ItemArmor)getRegisteredItem("steel_boots");
+            steel_ingot = getRegisteredItem("steel_ingot");
+            steel_nugget = getRegisteredItem("steel_nugget");
+            nether_ash = getRegisteredItem("nether_ash");
+
+            ruby = getRegisteredItem("ruby");
+
+            amethyst = getRegisteredItem("amethyst");
+            amethyst_hoe = getRegisteredItem("amethyst_hoe");
+            amethyst_sword = getRegisteredItem("amethyst_sword");
+            amethyst_shovel = getRegisteredItem("amethyst_shovel");
+            amethyst_pickaxe = getRegisteredItem("amethyst_pickaxe");
+            amethyst_axe = getRegisteredItem("amethyst_axe");
+            amethyst_helmet = (ItemArmor)getRegisteredItem("amethyst_helmet");
+            amethyst_chestplate = (ItemArmor)getRegisteredItem("amethyst_chestplate");
+            amethyst_leggings = (ItemArmor)getRegisteredItem("amethyst_leggings");
+            amethyst_boots = (ItemArmor)getRegisteredItem("amethyst_boots");
+
+            holy_grenade = (ItemGrenade)getRegisteredItem("holy_hand_grenade");
+            glowing_bread = (ItemFood) getRegisteredItem("glowing_bread");
+
+            ender_pouch = (ItemBackpack) getRegisteredItem("ender_pouch");
         }
     }
 }

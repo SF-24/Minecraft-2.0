@@ -9,10 +9,13 @@ import net.minecraft.world.World;
 
 public class ItemAppleGold extends ItemFood
 {
+
     public ItemAppleGold(int amount, float saturation, boolean isWolfFood)
     {
-        super(amount, saturation, isWolfFood);
+        super(amount, saturation, isWolfFood, EnumFoodType.EXCLUDED);
         this.setHasSubtypes(true);
+        this.alwaysEdibleBase=true;
+        this.alwaysEdible=true;
     }
 
     public boolean hasEffect(ItemStack stack)

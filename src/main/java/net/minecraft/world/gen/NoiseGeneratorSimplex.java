@@ -40,22 +40,22 @@ public class NoiseGeneratorSimplex
         }
     }
 
-    private static int func_151607_a(double p_151607_0_)
+    private static int fastFloor(double p_151607_0_)
     {
         return p_151607_0_ > 0.0D ? (int)p_151607_0_ : (int)p_151607_0_ - 1;
     }
 
-    private static double func_151604_a(int[] p_151604_0_, double p_151604_1_, double p_151604_3_)
+    private static double dot(int[] p_151604_0_, double p_151604_1_, double p_151604_3_)
     {
         return (double)p_151604_0_[0] * p_151604_1_ + (double)p_151604_0_[1] * p_151604_3_;
     }
 
-    public double func_151605_a(double p_151605_1_, double p_151605_3_)
+    public double getValue(double p_151605_1_, double p_151605_3_)
     {
         double d3 = 0.5D * (field_151614_a - 1.0D);
         double d4 = (p_151605_1_ + p_151605_3_) * d3;
-        int i = func_151607_a(p_151605_1_ + d4);
-        int j = func_151607_a(p_151605_3_ + d4);
+        int i = fastFloor(p_151605_1_ + d4);
+        int j = fastFloor(p_151605_3_ + d4);
         double d5 = (3.0D - field_151614_a) / 6.0D;
         double d6 = (double)(i + j) * d5;
         double d7 = (double)i - d6;
@@ -95,7 +95,7 @@ public class NoiseGeneratorSimplex
         else
         {
             d15 = d15 * d15;
-            d0 = d15 * d15 * func_151604_a(field_151611_e[k1], d9, d10);
+            d0 = d15 * d15 * dot(field_151611_e[k1], d9, d10);
         }
 
         double d16 = 0.5D - d11 * d11 - d12 * d12;
@@ -108,7 +108,7 @@ public class NoiseGeneratorSimplex
         else
         {
             d16 = d16 * d16;
-            d1 = d16 * d16 * func_151604_a(field_151611_e[l1], d11, d12);
+            d1 = d16 * d16 * dot(field_151611_e[l1], d11, d12);
         }
 
         double d17 = 0.5D - d13 * d13 - d14 * d14;
@@ -121,13 +121,13 @@ public class NoiseGeneratorSimplex
         else
         {
             d17 = d17 * d17;
-            d2 = d17 * d17 * func_151604_a(field_151611_e[i2], d13, d14);
+            d2 = d17 * d17 * dot(field_151611_e[i2], d13, d14);
         }
 
         return 70.0D * (d0 + d1 + d2);
     }
 
-    public void func_151606_a(double[] p_151606_1_, double p_151606_2_, double p_151606_4_, int p_151606_6_, int p_151606_7_, double p_151606_8_, double p_151606_10_, double p_151606_12_)
+    public void add(double[] p_151606_1_, double p_151606_2_, double p_151606_4_, int p_151606_6_, int p_151606_7_, double p_151606_8_, double p_151606_10_, double p_151606_12_)
     {
         int i = 0;
 
@@ -139,8 +139,8 @@ public class NoiseGeneratorSimplex
             {
                 double d1 = (p_151606_2_ + (double)k) * p_151606_8_ + this.field_151612_b;
                 double d5 = (d1 + d0) * field_151609_g;
-                int l = func_151607_a(d1 + d5);
-                int i1 = func_151607_a(d0 + d5);
+                int l = fastFloor(d1 + d5);
+                int i1 = fastFloor(d0 + d5);
                 double d6 = (double)(l + i1) * field_151615_h;
                 double d7 = (double)l - d6;
                 double d8 = (double)i1 - d6;
@@ -179,7 +179,7 @@ public class NoiseGeneratorSimplex
                 else
                 {
                     d15 = d15 * d15;
-                    d2 = d15 * d15 * func_151604_a(field_151611_e[j2], d9, d10);
+                    d2 = d15 * d15 * dot(field_151611_e[j2], d9, d10);
                 }
 
                 double d16 = 0.5D - d11 * d11 - d12 * d12;
@@ -192,7 +192,7 @@ public class NoiseGeneratorSimplex
                 else
                 {
                     d16 = d16 * d16;
-                    d3 = d16 * d16 * func_151604_a(field_151611_e[k2], d11, d12);
+                    d3 = d16 * d16 * dot(field_151611_e[k2], d11, d12);
                 }
 
                 double d17 = 0.5D - d13 * d13 - d14 * d14;
@@ -205,7 +205,7 @@ public class NoiseGeneratorSimplex
                 else
                 {
                     d17 = d17 * d17;
-                    d4 = d17 * d17 * func_151604_a(field_151611_e[l2], d13, d14);
+                    d4 = d17 * d17 * dot(field_151611_e[l2], d13, d14);
                 }
 
                 int i3 = i++;

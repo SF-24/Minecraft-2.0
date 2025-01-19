@@ -10,25 +10,51 @@ public class GenLayerBiome extends GenLayer
     private BiomeGenBase[] field_151621_d = new BiomeGenBase[] {BiomeGenBase.forest, BiomeGenBase.roofedForest, BiomeGenBase.extremeHills, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.swampland};
     private BiomeGenBase[] field_151622_e = new BiomeGenBase[] {BiomeGenBase.forest, BiomeGenBase.extremeHills, BiomeGenBase.taiga, BiomeGenBase.plains};
     private BiomeGenBase[] field_151620_f = new BiomeGenBase[] {BiomeGenBase.icePlains, BiomeGenBase.icePlains, BiomeGenBase.icePlains, BiomeGenBase.coldTaiga};
-    private final ChunkProviderSettings field_175973_g;
+    private final ChunkProviderSettings chunkProviderSettings;
 
-    public GenLayerBiome(long p_i45560_1_, GenLayer p_i45560_3_, WorldType p_i45560_4_, String p_i45560_5_)
+    private BiomeGenBase[] randomBiomeList;
+
+    WorldType worldType;
+
+    public GenLayerBiome(long varLong, GenLayer genLayer, WorldType worldType, String varString)
     {
-        super(p_i45560_1_);
-        this.parent = p_i45560_3_;
+        super(varLong);
+        this.worldType=worldType;
 
-        if (p_i45560_4_ == WorldType.DEFAULT_1_1)
+        this.parent = genLayer;
+
+        if (worldType == WorldType.DEFAULT_1_1)
         {
             this.field_151623_c = new BiomeGenBase[] {BiomeGenBase.desert, BiomeGenBase.forest, BiomeGenBase.extremeHills, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.taiga};
-            this.field_175973_g = null;
+            this.chunkProviderSettings = null;
         }
-        else if (p_i45560_4_ == WorldType.CUSTOMIZED)
+        else if (worldType == WorldType.CUSTOMIZED)
         {
-            this.field_175973_g = ChunkProviderSettings.Factory.jsonToFactory(p_i45560_5_).func_177864_b();
+            this.chunkProviderSettings = ChunkProviderSettings.Factory.jsonToFactory(varString).func_177864_b();
+        }
+        else if (worldType == WorldType.RANDOM_BIOMES)
+        {
+            // random biomes world generation
+            this.randomBiomeList = new BiomeGenBase[] {
+                BiomeGenBase.volcanic_wasteland, BiomeGenBase.mesaPlateau, BiomeGenBase.mesa,
+                BiomeGenBase.desert, BiomeGenBase.desert, BiomeGenBase.desert, BiomeGenBase.savanna, BiomeGenBase.savanna, BiomeGenBase.plains,
+                BiomeGenBase.jungle,BiomeGenBase.jungle, BiomeGenBase.tropical_swampland, BiomeGenBase.rainforest,
+                BiomeGenBase.forest, BiomeGenBase.roofedForest, BiomeGenBase.extremeHills, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.swampland, BiomeGenBase.roofedSwamp,
+                BiomeGenBase.forest, BiomeGenBase.autumnalForest, BiomeGenBase.taiga, BiomeGenBase.megaTaiga, BiomeGenBase.coldTaiga, BiomeGenBase.stoneMountains,
+                BiomeGenBase.iceMountains, BiomeGenBase.icePlains, BiomeGenBase.icePlains, BiomeGenBase.icePlains
+            };
+
+            /*
+            this.randomBiomeList = new BiomeGenBase[] {
+                BiomeGenBase.desert, BiomeGenBase.desert, BiomeGenBase.savanna, BiomeGenBase.plains, BiomeGenBase.plains, BiomeGenBase.forest, BiomeGenBase.forest, BiomeGenBase.roofedForest, BiomeGenBase.extremeHills, BiomeGenBase.extremeHills,
+                BiomeGenBase.birchForest, BiomeGenBase.swampland, BiomeGenBase.swampland, BiomeGenBase.taiga, BiomeGenBase.icePlains, BiomeGenBase.coldTaiga, ?, ?, ?, ?, ?
+
+            };*/
+            chunkProviderSettings=null;
         }
         else
         {
-            this.field_175973_g = null;
+            this.chunkProviderSettings = null;
         }
     }
 
@@ -38,21 +64,42 @@ public class GenLayerBiome extends GenLayer
      */
     public int[] getInts(int areaX, int areaY, int areaWidth, int areaHeight)
     {
+        // var5
         int[] aint = this.parent.getInts(areaX, areaY, areaWidth, areaHeight);
+        // var6
         int[] aint1 = IntCache.getIntCache(areaWidth * areaHeight);
 
         for (int i = 0; i < areaHeight; ++i)
         {
             for (int j = 0; j < areaWidth; ++j)
             {
+                //a -> i = var7
+                //     j = var8
                 this.initChunkSeed((long)(j + areaX), (long)(i + areaY));
+                // var9
                 int k = aint[j + i * areaWidth];
+                // var10
                 int l = (k & 3840) >> 8;
                 k = k & -3841;
 
-                if (this.field_175973_g != null && this.field_175973_g.fixedBiome >= 0)
+                // random biomes world type
+                if(this.worldType==WorldType.RANDOM_BIOMES) {
+
+                    if (isBiomeOceanic(k)) {
+                        aint1[j + i * areaWidth] = k;
+                    } else if (k == BiomeGenBase.mushroomIsland.biomeID) {
+                        aint1[j + i * areaWidth] = k;
+                    } else if (k >= 1 && k <= 4) {
+                        // a -> getIntCache? or aint1 or this.nextInt
+                        aint1[j + i * areaWidth] = (this.randomBiomeList[this.nextInt(this.randomBiomeList.length)]).biomeID;
+                    } else {
+                        aint1[j + i * areaWidth] = BiomeGenBase.mushroomIsland.biomeID;
+                    }
+
+                    // End of random biomes
+                } else if (this.chunkProviderSettings != null && this.chunkProviderSettings.fixedBiome >= 0)
                 {
-                    aint1[j + i * areaWidth] = this.field_175973_g.fixedBiome;
+                    aint1[j + i * areaWidth] = this.chunkProviderSettings.fixedBiome;
                 }
                 else if (isBiomeOceanic(k))
                 {
@@ -116,3 +163,4 @@ public class GenLayerBiome extends GenLayer
         return aint1;
     }
 }
+

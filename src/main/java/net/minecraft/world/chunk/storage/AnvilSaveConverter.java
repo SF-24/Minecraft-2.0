@@ -122,9 +122,11 @@ public class AnvilSaveConverter extends SaveFormatOld
         List<File> list = Lists.<File>newArrayList();
         List<File> list1 = Lists.<File>newArrayList();
         List<File> list2 = Lists.<File>newArrayList();
+        List<File> list3 = Lists.<File>newArrayList();
         File file1 = new File(this.savesDirectory, filename);
         File file2 = new File(file1, "DIM-1");
         File file3 = new File(file1, "DIM1");
+        File file4 = new File(file1, "DIM2");
         logger.info("Scanning folders...");
         this.addRegionFilesToCollection(file1, list);
 
@@ -136,6 +138,10 @@ public class AnvilSaveConverter extends SaveFormatOld
         if (file3.exists())
         {
             this.addRegionFilesToCollection(file3, list2);
+        }
+        if (file4.exists())
+        {
+            this.addRegionFilesToCollection(file4, list3);
         }
 
         int i = list.size() + list1.size() + list2.size();
@@ -155,6 +161,7 @@ public class AnvilSaveConverter extends SaveFormatOld
         this.convertFile(new File(file1, "region"), list, worldchunkmanager, 0, i, progressCallback);
         this.convertFile(new File(file2, "region"), list1, new WorldChunkManagerHell(BiomeGenBase.hell, 0.0F), list.size(), i, progressCallback);
         this.convertFile(new File(file3, "region"), list2, new WorldChunkManagerHell(BiomeGenBase.sky, 0.0F), list.size() + list1.size(), i, progressCallback);
+        this.convertFile(new File(file4, "region"), list3, new WorldChunkManagerHell(BiomeGenBase.sky, 0.0F), list.size() + list2.size(), i, progressCallback);
         worldinfo.setSaveVersion(19133);
 
         if (worldinfo.getTerrainType() == WorldType.DEFAULT_1_1)

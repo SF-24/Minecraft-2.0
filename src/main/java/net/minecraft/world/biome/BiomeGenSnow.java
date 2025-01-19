@@ -18,6 +18,10 @@ public class BiomeGenSnow extends BiomeGenBase
     public BiomeGenSnow(int id, boolean p_i45378_2_)
     {
         super(id);
+        this.theBiomeDecorator.mushroomsPerChunk=0;
+        this.theBiomeDecorator.flowersPerChunk=0;
+        this.theBiomeDecorator.grassPerChunk=0;
+
         this.field_150615_aC = p_i45378_2_;
 
         if (p_i45378_2_)

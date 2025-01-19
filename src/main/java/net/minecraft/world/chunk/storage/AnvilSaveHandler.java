@@ -3,6 +3,7 @@ package net.minecraft.world.chunk.storage;
 import java.io.File;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.WorldProvider;
+import net.minecraft.world.WorldProviderAether;
 import net.minecraft.world.WorldProviderEnd;
 import net.minecraft.world.WorldProviderHell;
 import net.minecraft.world.storage.SaveHandler;
@@ -34,6 +35,13 @@ public class AnvilSaveHandler extends SaveHandler
             File file2 = new File(file1, "DIM1");
             file2.mkdirs();
             return new AnvilChunkLoader(file2);
+        }
+        // added aether world provider
+        else if (provider instanceof WorldProviderAether)
+        {
+            File file4 = new File(file1, "DIM2");
+            file4.mkdirs();
+            return new AnvilChunkLoader(file4);
         }
         else
         {

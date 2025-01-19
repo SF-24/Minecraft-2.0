@@ -2,6 +2,7 @@ package net.minecraft.client.model;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.MathHelper;
 
 public class ModelPlayer extends ModelBiped
 {
@@ -12,19 +13,20 @@ public class ModelPlayer extends ModelBiped
     public ModelRenderer bipedBodyWear;
     private ModelRenderer bipedCape;
     private ModelRenderer bipedDeadmau5Head;
+    public ModelRenderer bipedTail;
     private boolean smallArms;
 
-    public ModelPlayer(float p_i46304_1_, boolean p_i46304_2_)
+    public ModelPlayer(float p_i46304_1_, boolean smallArms, ModelPlayerEnum playerModel)
     {
         super(p_i46304_1_, 0.0F, 64, 64);
-        this.smallArms = p_i46304_2_;
+        this.smallArms = smallArms;
         this.bipedDeadmau5Head = new ModelRenderer(this, 24, 0);
         this.bipedDeadmau5Head.addBox(-3.0F, -6.0F, -1.0F, 6, 6, 1, p_i46304_1_);
         this.bipedCape = new ModelRenderer(this, 0, 0);
         this.bipedCape.setTextureSize(64, 32);
         this.bipedCape.addBox(-5.0F, 0.0F, -1.0F, 10, 16, 1, p_i46304_1_);
 
-        if (p_i46304_2_)
+        if (smallArms)
         {
             this.bipedLeftArm = new ModelRenderer(this, 32, 48);
             this.bipedLeftArm.addBox(-1.0F, -2.0F, -2.0F, 3, 12, 4, p_i46304_1_);
@@ -64,6 +66,15 @@ public class ModelPlayer extends ModelBiped
         this.bipedBodyWear = new ModelRenderer(this, 16, 32);
         this.bipedBodyWear.addBox(-4.0F, 0.0F, -2.0F, 8, 12, 4, p_i46304_1_ + 0.25F);
         this.bipedBodyWear.setRotationPoint(0.0F, 0.0F, 0.0F);
+
+        playerModel=ModelPlayerEnum.HUMAN;
+        if(playerModel.equals(ModelPlayerEnum.FOX)) {
+            this.bipedTail=new ModelRenderer(this, 56, 16);
+
+            //this.bipedCape.addBox(-5.0F, 0.0F, -1.0F, 10, 16, 1, p_i46304_1_);
+            this.bipedTail.addBox(0F /*right-left, was -1*/, 0.0F /*up-down*/, 3F /*front-back*/, 2, 8 /*was 8*/, 2, p_i46304_1_);
+            this.bipedTail.setRotationPoint(-1F, 12.0F, -1.0F);
+        }
     }
 
     /**
@@ -84,6 +95,10 @@ public class ModelPlayer extends ModelBiped
             this.bipedLeftArmwear.render(scale);
             this.bipedRightArmwear.render(scale);
             this.bipedBodyWear.render(scale);
+            if(this.bipedTail!=null) {
+                this.bipedTail.renderWithRotation(scale);
+            }
+
         }
         else
         {
@@ -97,6 +112,9 @@ public class ModelPlayer extends ModelBiped
             this.bipedLeftArmwear.render(scale);
             this.bipedRightArmwear.render(scale);
             this.bipedBodyWear.render(scale);
+            if(bipedTail!=null) {
+                this.bipedTail.renderWithRotation(scale);
+            }
         }
 
         GlStateManager.popMatrix();

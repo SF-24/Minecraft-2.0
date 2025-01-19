@@ -3,13 +3,8 @@ package net.minecraft.world;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-import java.util.UUID;
+
+import java.util.*;
 import java.util.concurrent.Callable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHopper;
@@ -25,6 +20,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.profiler.Profiler;
@@ -66,7 +62,8 @@ public abstract class World implements IBlockAccess
     public final List<TileEntity> loadedTileEntityList = Lists.<TileEntity>newArrayList();
     public final List<TileEntity> tickableTileEntities = Lists.<TileEntity>newArrayList();
     private final List<TileEntity> addedTileEntityList = Lists.<TileEntity>newArrayList();
-    private final List<TileEntity> tileEntitiesToBeRemoved = Lists.<TileEntity>newArrayList();
+    // migrated to hash set for optimisation
+    private final HashSet<TileEntity> tileEntitiesToBeRemoved = new HashSet<>();
     public final List<EntityPlayer> playerEntities = Lists.<EntityPlayer>newArrayList();
     public final List<Entity> weatherEffects = Lists.<Entity>newArrayList();
     protected final IntHashMap<Entity> entitiesById = new IntHashMap<>(); // Added type inference
@@ -112,7 +109,7 @@ public abstract class World implements IBlockAccess
      * holds information about a world (size on disk, time, spawn point, seed, ...)
      */
     protected WorldInfo worldInfo;
-
+    
     /**
      * if set, this flag forces a request to load a chunk to load the chunk rather than defaulting to the world's
      * chunkprovider's dummy if possible
@@ -162,6 +159,7 @@ public abstract class World implements IBlockAccess
         this.provider = providerIn;
         this.isRemote = client;
         this.worldBorder = providerIn.getWorldBorder();
+
     }
 
     public World init()
@@ -2222,6 +2220,9 @@ public abstract class World implements IBlockAccess
         explosion.doExplosionB(true);
         return explosion;
     }
+
+
+
 
     /**
      * Gets the percentage of real blocks within within a bounding box, along a specified vector.

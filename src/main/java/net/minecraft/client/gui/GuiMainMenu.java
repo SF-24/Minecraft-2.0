@@ -198,17 +198,25 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
 
-        if (calendar.get(2) + 1 == 12 && calendar.get(5) == 24)
+        if (calendar.get(Calendar.MONTH) + 1 == 12 && (calendar.get(Calendar.DATE) == 24 || calendar.get(Calendar.DATE) == 25 || calendar.get(Calendar.DATE) == 26))
         {
             this.splashText = "Merry X-mas!";
         }
-        else if (calendar.get(2) + 1 == 1 && calendar.get(5) == 1)
+        else if (calendar.get(Calendar.MONTH) + 1 == 1 && calendar.get(Calendar.DATE) == 1)
         {
             this.splashText = "Happy new year!";
         }
-        else if (calendar.get(2) + 1 == 10 && calendar.get(5) == 31)
+        else if (calendar.get(Calendar.MONTH) + 1 == 10 && calendar.get(Calendar.DATE) == 31)
         {
             this.splashText = "OOoooOOOoooo! Spooky!";
+        }
+        else if (calendar.get(Calendar.MONTH) + 1 == 5 && calendar.get(Calendar.DATE) == 4)
+        {
+            this.splashText = "May the 4th be with you!";
+        }
+        else if (calendar.get(Calendar.MONTH) + 1 == 5 && calendar.get(Calendar.DATE) == 5)
+        {
+            this.splashText = "Revenge of the fifth...";
         }
 
         int i = 24;
@@ -239,14 +247,15 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
         }
 
         this.mc.setConnectedToRealms(false);
-
+        // disabled realms code
+        /*
         if (Minecraft.getMinecraft().gameSettings.getOptionOrdinalValue(GameSettings.Options.REALMS_NOTIFICATIONS) && !this.field_183502_L)
         {
             RealmsBridge realmsbridge = new RealmsBridge();
             this.field_183503_M = realmsbridge.getNotificationScreen(this);
             this.field_183502_L = true;
         }
-
+*/
         if (this.func_183501_a())
         {
             this.field_183503_M.setGuiSize(this.width, this.height);
@@ -259,9 +268,10 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
      */
     private void addSingleplayerMultiplayerButtons(int p_73969_1_, int p_73969_2_)
     {
-        this.buttonList.add(new GuiButton(1, this.width / 2 - 100, p_73969_1_, I18n.format("menu.singleplayer", new Object[0])));
-        this.buttonList.add(new GuiButton(2, this.width / 2 - 100, p_73969_1_ + p_73969_2_ * 1, I18n.format("menu.multiplayer", new Object[0])));
-        this.buttonList.add(this.realmsButton = new GuiButton(14, this.width / 2 - 100, p_73969_1_ + p_73969_2_ * 2, I18n.format("menu.online", new Object[0])));
+        this.buttonList.add(new GuiButton(1, this.width / 2 - 100, p_73969_1_, I18n.format("menu.singleplayer")));
+        this.buttonList.add(new GuiButton(2, this.width / 2 - 100, p_73969_1_ + p_73969_2_, I18n.format("menu.multiplayer")));
+        //Removed mc realms button
+        //this.buttonList.add(this.realmsButton = new GuiButton(14, this.width / 2 - 100, p_73969_1_ + p_73969_2_ * 2, I18n.format("menu.online", new Object[0])));
     }
 
     /**
@@ -565,7 +575,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
         GlStateManager.scale(f, f, f);
         this.drawCenteredString(this.fontRendererObj, this.splashText, 0, -8, -256);
         GlStateManager.popMatrix();
-        String s = "Minecraft 1.8.9";
+        String s = "Minecraft 2.0-snapshot";
 
         if (this.mc.isDemo())
         {

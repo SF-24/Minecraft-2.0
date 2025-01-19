@@ -834,7 +834,6 @@ tile.dragonEgg.name=Dragon Egg
 tile.redstoneLight.name=Redstone Lamp
 tile.cocoa.name=Cocoa
 tile.enderChest.name=Ender Chest
-tile.oreRuby.name=Ruby Ore
 tile.oreEmerald.name=Emerald Ore
 tile.blockEmerald.name=Block of Emerald
 tile.blockRedstone.name=Block of Redstone
@@ -2677,3 +2676,70 @@ item.banner.straight_cross.lightBlue=Light Blue Cross
 item.banner.straight_cross.magenta=Magenta Cross
 item.banner.straight_cross.orange=Orange Cross
 item.banner.straight_cross.white=White Cross
+
+item.spectralArrow.name=Spectral Arrow
+item.beetroot.name=Beetroot
+item.beetrootSeeds.name=Beetroot Seeds
+item.beetrootSoup.name=Beetroot Soup
+tile.beetroots.name=Beetroots
+tile.endBricks.name=End Stone Bricks
+selectWorld.startingMap=Starting Map
+selectWorld.extraOptions=Extra Options
+generator.largeOceans=Large Oceans
+
+item.swordSteel.name=Steel Sword
+item.hatchetSteel.name=Steel Axe
+item.pickaxeSteel.name=Steel Pickaxe
+item.shovelSteel.name=Steel Shovel
+item.hoeSteel.name=Steel Hoe
+item.helmetSteel.name=Steel Helmet
+item.chestplateSteel.name=Steel Chestplate
+item.leggingsSteel.name=Steel Leggings
+item.bootsSteel.name=Steel Boots
+item.ingotSteel.name=Steel Ingot
+item.nuggetSteel.name=Steel Nugget
+item.netherAsh.name=Nether Ash
+tile.oreAsh.name=Nether Ash Ore
+tile.blockSteel.name=Block of Steel
+tile.oreNetherGold.name=Gold Ore
+
+tile.blockAmethyst.name=Block of Amethyst
+tile.crystalAmethyst.name=Amethyst Crystal
+item.amethyst.name=Amethyst
+item.swordAmethyst.name=Amethyst Sword
+item.hatchetAmethyst.name=Amethyst Axe
+item.pickaxeAmethyst.name=Amethyst Pickaxe
+item.shovelAmethyst.name=Amethyst Shovel
+item.hoeAmethyst.name=Amethyst Hoe
+item.helmetAmethyst.name=Amethyst Helmet
+item.chestplateAmethyst.name=Amethyst Chestplate
+item.leggingsAmethyst.name=Amethyst Leggings
+item.bootsAmethyst.name=Amethyst Boots
+
+tile.oreRuby.name=Ruby Ore
+tile.blockRuby.name=Ruby Block
+
+tile.blockRail.name=Rail Block
+tile.blockRailGold.name=Powered Rail Block
+tile.blockRailActivator.name=Activator Rail Block
+tile.blockRailDetector.name=Detector Rail Block
+tile.blockCobweb.name=Cobweb Block
+
+item.pouchEnder.name=Ender Pouch
+
+item.breadGlowing.name=Glowing Bread
+
+item.grenadeHoly.name=Holy Hand Grenade
+
+tile.cobblestoneCompressed.cobblestoneCompressed.name=Compressed Cobblestone
+tile.cobblestoneCompressed.cobblestoneCompressedMossy.name=Mossy Compressed Cobblestone
+
+grenade.holy.description.1=Once the number three, being the third number, be reached, 
+grenade.holy.description.2=then lobbest thou thy Holy Hand Grenade of Antioch towards thy foe, 
+grenade.holy.description.3=who, being naughty in My sight, shall snuff it
+
+tile.oreGravitite.name=Gravitite Ore
+item.record.magnetic_circuit.desc=Notch - Magnetic Circuit
+
+achievement.portalAether=Hostile Paradise
+achievement.portalAether.desc=Build and Aether Portal

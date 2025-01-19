@@ -79,14 +79,7 @@ import net.minecraft.entity.monster.EntityGuardian;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.entity.projectile.EntityEgg;
-import net.minecraft.entity.projectile.EntityFishHook;
-import net.minecraft.entity.projectile.EntityLargeFireball;
-import net.minecraft.entity.projectile.EntityPotion;
-import net.minecraft.entity.projectile.EntitySmallFireball;
-import net.minecraft.entity.projectile.EntitySnowball;
-import net.minecraft.entity.projectile.EntityWitherSkull;
+import net.minecraft.entity.projectile.*;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.AnimalChest;
 import net.minecraft.inventory.Container;
@@ -325,6 +318,11 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
         {
             entity = new EntitySnowball(this.clientWorldController, d0, d1, d2);
         }
+        // entity grenade | EntityGrenade : render code
+        /*else if (packetIn.getType() == 201)
+        {
+            entity = new EntityGrenade(this.clientWorldController, d0, d1, d2, Items.holy_grenade);
+        }*/
         else if (packetIn.getType() == 71)
         {
             entity = new EntityItemFrame(this.clientWorldController, new BlockPos(MathHelper.floor_double(d0), MathHelper.floor_double(d1), MathHelper.floor_double(d2)), EnumFacing.getHorizontal(packetIn.func_149009_m()));

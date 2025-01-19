@@ -187,7 +187,7 @@ public class GameSettings
         this.difficulty = EnumDifficulty.NORMAL;
         this.lastServer = "";
         this.fovSetting = 70.0F;
-        this.language = "en_US";
+        this.language = "en_UK";
         this.forceUnicodeFont = false;
         this.mc = mcIn;
         this.optionsFile = new File(optionsFileIn, "options.txt");
@@ -211,7 +211,7 @@ public class GameSettings
         this.difficulty = EnumDifficulty.NORMAL;
         this.lastServer = "";
         this.fovSetting = 70.0F;
-        this.language = "en_US";
+        this.language = "en_UK";
         this.forceUnicodeFont = false;
     }
 

@@ -36,7 +36,7 @@ public class ItemRecord extends Item
     {
         IBlockState iblockstate = worldIn.getBlockState(pos);
 
-        if (iblockstate.getBlock() == Blocks.jukebox && !((Boolean)iblockstate.getValue(BlockJukebox.HAS_RECORD)).booleanValue())
+        if (iblockstate.getBlock() == Blocks.jukebox && !(Boolean) iblockstate.getValue(BlockJukebox.HAS_RECORD))
         {
             if (worldIn.isRemote)
             {

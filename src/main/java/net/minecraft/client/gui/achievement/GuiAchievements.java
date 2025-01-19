@@ -23,7 +23,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
 
-public class GuiAchievements extends GuiScreen implements IProgressMeter
+public class  GuiAchievements extends GuiScreen implements IProgressMeter
 {
     private static final int field_146572_y = AchievementList.minDisplayColumn * 24 - 112;
     private static final int field_146571_z = AchievementList.minDisplayRow * 24 - 112;
@@ -31,10 +31,15 @@ public class GuiAchievements extends GuiScreen implements IProgressMeter
     private static final int field_146560_B = AchievementList.maxDisplayRow * 24 - 77;
     private static final ResourceLocation ACHIEVEMENT_BACKGROUND = new ResourceLocation("textures/gui/achievement/achievement_background.png");
     protected GuiScreen parentScreen;
+
+    // changing values breaks game
     protected int field_146555_f = 256;
     protected int field_146557_g = 202;
+
     protected int field_146563_h;
     protected int field_146564_i;
+
+    // unknown value?
     protected float field_146570_r = 1.0F;
     protected double field_146569_s;
     protected double field_146568_t;
@@ -64,6 +69,8 @@ public class GuiAchievements extends GuiScreen implements IProgressMeter
     {
         this.mc.getNetHandler().addToSendQueue(new C16PacketClientStatus(C16PacketClientStatus.EnumState.REQUEST_STATS));
         this.buttonList.clear();
+
+        // done button for ui
         this.buttonList.add(new GuiOptionButton(1, this.width / 2 + 24, this.height / 2 + 74, 80, 20, I18n.format("gui.done", new Object[0])));
     }
 
@@ -233,6 +240,7 @@ public class GuiAchievements extends GuiScreen implements IProgressMeter
 
     protected void drawTitle()
     {
+        // i and j? Centre of ui?
         int i = (this.width - this.field_146555_f) / 2;
         int j = (this.height - this.field_146557_g) / 2;
         this.fontRendererObj.drawString(I18n.format("gui.achievements", new Object[0]), i + 15, j + 5, 4210752);
@@ -242,6 +250,7 @@ public class GuiAchievements extends GuiScreen implements IProgressMeter
     {
         int i = MathHelper.floor_double(this.field_146569_s + (this.field_146567_u - this.field_146569_s) * (double)p_146552_3_);
         int j = MathHelper.floor_double(this.field_146568_t + (this.field_146566_v - this.field_146568_t) * (double)p_146552_3_);
+
 
         if (i < field_146572_y)
         {
@@ -263,15 +272,21 @@ public class GuiAchievements extends GuiScreen implements IProgressMeter
             j = field_146560_B - 1;
         }
 
-        int k = (this.width - this.field_146555_f) / 2;
-        int l = (this.height - this.field_146557_g) / 2;
-        int i1 = k + 16;
-        int j1 = l + 17;
+
+        // center achievement ui
+        int centerWidth = (this.width - this.field_146555_f) / 2;
+        int centerHeight = (this.height - this.field_146557_g) / 2;
+        int i1 = centerWidth + 16;
+        int j1 = centerHeight + 17;
+
         this.zLevel = 0.0F;
         GlStateManager.depthFunc(518);
         GlStateManager.pushMatrix();
         GlStateManager.translate((float)i1, (float)j1, -200.0F);
+
+        // ACHIEVEMENT BACKGROUND SCALE
         GlStateManager.scale(1.0F / this.field_146570_r, 1.0F / this.field_146570_r, 0.0F);
+
         GlStateManager.enableTexture2D();
         GlStateManager.disableLighting();
         GlStateManager.enableRescaleNormal();
@@ -487,7 +502,7 @@ public class GuiAchievements extends GuiScreen implements IProgressMeter
         GlStateManager.popMatrix();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(ACHIEVEMENT_BACKGROUND);
-        this.drawTexturedModalRect(k, l, 0, 0, this.field_146555_f, this.field_146557_g);
+        this.drawTexturedModalRect(centerWidth, centerHeight, 0, 0, this.field_146555_f, this.field_146557_g);
         this.zLevel = 0.0F;
         GlStateManager.depthFunc(515);
         GlStateManager.disableDepth();

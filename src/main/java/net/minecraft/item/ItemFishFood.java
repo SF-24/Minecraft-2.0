@@ -15,9 +15,9 @@ public class ItemFishFood extends ItemFood
     /** Indicates whether this fish is "cooked" or not. */
     private final boolean cooked;
 
-    public ItemFishFood(boolean cooked)
+    public ItemFishFood(boolean cooked, EnumFoodType foodType)
     {
-        super(0, 0.0F, false);
+        super(0, 0.0F, false, foodType);
         this.cooked = cooked;
     }
 

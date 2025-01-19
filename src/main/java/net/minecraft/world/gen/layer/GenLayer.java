@@ -47,14 +47,19 @@ public abstract class GenLayer
         GenLayerDeepOcean genlayerdeepocean = new GenLayerDeepOcean(4L, genlayeraddmushroomisland);
         GenLayer genlayer4 = GenLayerZoom.magnify(1000L, genlayerdeepocean, 0);
         ChunkProviderSettings chunkprovidersettings = null;
-        int i = 4;
-        int j = i;
+        int i = 4; // biome size
+        int j = 8; // river size, was 4
 
         if (p_180781_2_ == WorldType.CUSTOMIZED && p_180781_3_.length() > 0)
         {
             chunkprovidersettings = ChunkProviderSettings.Factory.jsonToFactory(p_180781_3_).func_177864_b();
             i = chunkprovidersettings.biomeSize;
             j = chunkprovidersettings.riverSize;
+        }
+
+        if (p_180781_2_ == WorldType.RANDOM_BIOMES)
+        {
+            i = 5;
         }
 
         if (p_180781_2_ == WorldType.LARGE_BIOMES)

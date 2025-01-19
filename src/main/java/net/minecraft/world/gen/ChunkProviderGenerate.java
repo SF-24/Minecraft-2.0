@@ -1,9 +1,10 @@
 package net.minecraft.world.gen;
 
-import java.util.List;
-import java.util.Random;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockFalling;
+import java.util.*;
+
+import net.minecraft.block.*;
+import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
@@ -24,6 +25,8 @@ import net.minecraft.world.gen.structure.MapGenScatteredFeature;
 import net.minecraft.world.gen.structure.MapGenStronghold;
 import net.minecraft.world.gen.structure.MapGenVillage;
 import net.minecraft.world.gen.structure.StructureOceanMonument;
+
+import static net.minecraft.block.BlockSand.VARIANT;
 
 public class ChunkProviderGenerate implements IChunkProvider
 {
@@ -52,7 +55,9 @@ public class ChunkProviderGenerate implements IChunkProvider
     private ChunkProviderSettings settings;
     private Block oceanBlockTmpl = Blocks.water;
     private double[] stoneNoise = new double[256];
+
     private MapGenBase caveGenerator = new MapGenCaves();
+    //private MapGenBase caveGenerator = new MapGenCavesSwiss();
 
     /** Holds Stronghold Generator */
     private MapGenStronghold strongholdGenerator = new MapGenStronghold();
@@ -184,7 +189,152 @@ public class ChunkProviderGenerate implements IChunkProvider
      * Possibly reshapes the biome if appropriate for the biome type, and replaces some stone with things like dirt,
      * grass, gravel, ice
      */
-    public void replaceBlocksForBiome(int x, int z, ChunkPrimer primer, BiomeGenBase[] biomeGens)
+
+    // ???? !!!! findme
+    // beach generation + surface
+    public void replaceBlocksForBiome(int x, int z, ChunkPrimer primer, BiomeGenBase[] biomesIn) {
+        IBlockState BEDROCK = Blocks.bedrock.getDefaultState();
+        IBlockState AIR  = Blocks.air.getDefaultState();
+        IBlockState STONE = Blocks.stone.getDefaultState();
+        IBlockState SNOW = Blocks.snow.getDefaultState();
+        IBlockState GRAVEL = Blocks.gravel.getDefaultState();
+        IBlockState GOLD_ORE = Blocks.gold_ore.getDefaultState();
+        IBlockState SAND = Blocks.sand.getDefaultState();
+        IBlockState WATER = Blocks.water.getDefaultState();
+        IBlockState SANDSTONE = Blocks.sandstone.getDefaultState();
+
+        byte byte0 = 63;
+        double d = 0.03125D;
+        double[] sandNoise = null;
+        double[] gravelNoise = null;
+        sandNoise = this.field_147429_l.generateNoiseOctaves(sandNoise, x * 16,/*10*/0, z * 16, /*20*/16, 1, /*20*/16, d, 1.0D, d);
+        gravelNoise = this.field_147429_l.generateNoiseOctaves(gravelNoise, x * 8, 109/*109.0134D*/, z * 8, 22, 1, 22, d, 1.0D, d);
+
+        for (int k = 0; k < 16; k++) {
+            for (int l = 0; l < 16; l++) {
+
+                BiomeGenBase biomegenbase = biomesIn[k + l * 16];
+//                BiomeGenBase biomegenbase = this.worldObj.getBiomeGenForCoords(new BlockPos(x, 64, z));
+
+                boolean forceSandBeach = false;
+                List<BiomeGenBase> biomes = new ArrayList<>(Collections.emptyList());
+                biomes.add(BiomeGenBase.jungle);
+                biomes.add(BiomeGenBase.jungleEdge);
+                biomes.add(BiomeGenBase.jungleHills);
+                biomes.add(BiomeGenBase.tropical_swampland);
+                biomes.add(BiomeGenBase.desert);
+                biomes.add(BiomeGenBase.beach);
+
+                double sandV = sandNoise[k + l * 16] + rand.nextDouble() * 0.20000000000000001D;
+                double v1 = gravelNoise[k + l * 16] + rand.nextDouble() * 0.20000000000000001D;
+                if(biomes.contains(biomegenbase)) sandV+=20;
+
+                // flag 1 = sand
+                // flag 2 = gravel
+                boolean flag = sandV > 1D;//0.0D;
+                boolean flag1 = v1 > 14;//3D;
+
+                if(flag) {
+                    if(v1>=(sandV+19.0d)) {
+                        flag = false;
+                        flag1=true;
+                        //System.out.println("gravel override");
+                    }
+                }
+
+                if(biomegenbase.equals(BiomeGenBase.beach)) {
+                    flag= true;
+                    flag1=false;
+                }
+                if(biomegenbase.equals(BiomeGenBase.coldBeach)) {
+                    flag1=true;
+                    flag=false;
+                }
+                if(biomegenbase.equals(BiomeGenBase.desert) || biomegenbase.equals(BiomeGenBase.mesa)) {
+                    flag1=false;
+                    flag=false;
+                }
+
+                //System.out.println(flag + " |sand| " + v);
+                //System.out.println(flag1 + " |gravel| " + v1);
+                int i1 = (int)(stoneNoise[k + l * 16] / 3D + 3D + rand.nextDouble() * 0.25D);
+                int j1 = -1;
+
+                IBlockState byte1 = biomegenbase.topBlock;
+                IBlockState byte2 = biomegenbase.fillerBlock;
+
+                for (int k1 = 255; k1 >= 0; k1--) {
+                    int l1 = (l * 16 + k) * 256 + k1;
+                    if (k1 <= /*rand.nextInt(1)*/0) {
+                        // set bedrock at y=0
+                        primer.setBlockState(l, k1, k, BEDROCK);
+                    }
+                    IBlockState byte3 = primer.getBlockState(l, k1, k);
+
+                    if (byte3 == AIR) {
+                        j1 = -1;
+                        continue;
+                    }
+                    if (byte3 != STONE) {
+                        continue;
+                    }
+
+                    if (j1 == -1) {
+                        if (i1 <= 0) {
+                            byte1 = AIR;
+                            byte2 = STONE;
+                        } else
+                        if (k1 >= byte0 - 4 && k1 <= byte0 + 1) {
+                            // improve this
+
+                            byte1 = biomegenbase.topBlock;
+                            byte2 = biomegenbase.fillerBlock;
+
+                            if (flag1) {
+                                byte1 = AIR;
+                            }
+                            if (flag1) {
+                                if(!forceSandBeach) {
+                                    int random = rand.nextInt(1500);
+                                    byte2 = GRAVEL;
+                                    if(random == 0) {byte2=GOLD_ORE;}
+                                } else {
+                                    byte2 = SAND;
+                                }
+                            }
+                            if (flag) {
+                                byte1 = SAND;
+                            }
+                            if (flag) {
+                                byte2 = SAND;
+                            }
+                        }
+                        if (k1 < byte0 && byte1 == AIR) {
+                            byte1 = WATER;
+                        }
+                        j1 = i1;
+
+                        if (k1 >= byte0 - 1) {
+                            primer.setBlockState(l, k1, k, byte1);
+                        } else {
+                            primer.setBlockState(l, k1, k, byte2);
+                        }
+                        continue;
+                    }
+                    if (j1 <= 0) {
+                        continue;
+                    }
+                    j1--;
+                    primer.setBlockState(l, k1, k, byte2);
+                    if (j1 == 0 && byte2 == SAND) {
+                        j1 = rand.nextInt(4);
+                        byte2 = SANDSTONE;
+                    }
+                }
+            }
+        }
+    }
+    /*public void replaceBlocksForBiome(int x, int z, ChunkPrimer primer, BiomeGenBase[] biomeGens)
     {
         double d0 = 0.03125D;
         this.stoneNoise = this.field_147430_m.func_151599_a(this.stoneNoise, (double)(x * 16), (double)(z * 16), 16, 16, d0 * 2.0D, d0 * 2.0D, 1.0D);
@@ -197,7 +347,7 @@ public class ChunkProviderGenerate implements IChunkProvider
                 biomegenbase.genTerrainBlocks(this.worldObj, this.rand, primer, x * 16 + i, z * 16 + j, this.stoneNoise[j + i * 16]);
             }
         }
-    }
+    }*/
 
     /**
      * Will return back a chunk, if it doesn't exist and its not a MP client it will generates all the blocks for the
@@ -472,12 +622,86 @@ public class ChunkProviderGenerate implements IChunkProvider
                 if (this.worldObj.canBlockFreezeWater(blockpos2))
                 {
                     this.worldObj.setBlockState(blockpos2, Blocks.ice.getDefaultState(), 2);
+                    this.worldObj.forceBlockUpdateTick(Blocks.ice, blockpos2, new Random());
                 }
 
+                // Mountain snow gen included
                 if (this.worldObj.canSnowAt(blockpos1, true))
                 {
-                    this.worldObj.setBlockState(blockpos1, Blocks.snow_layer.getDefaultState(), 2);
+                    if(!biomegenbase.equals(BiomeGenBase.stoneMountains)) {
+                        this.worldObj.setBlockState(blockpos1, Blocks.snow_layer.getDefaultState(), 2);
+                    }
                 }
+
+                ArrayList<Block> whitelist = new ArrayList<>();
+                whitelist.add(Blocks.grass);
+                whitelist.add(Blocks.dirt);
+                ArrayList<Block> whitelist2 = new ArrayList<>();
+                whitelist2.add(Blocks.sandstone);
+                whitelist2.add(Blocks.sand);
+
+                //System.out.println(worldObj.getBlockState(blockpos2).getBlock());
+
+                if (worldObj.getBiomeGenForCoords(blockpos2).topBlock.getBlock().equals(Blocks.sand) && whitelist.contains(worldObj.getBlockState(blockpos2).getBlock())) {
+                    this.worldObj.setBlockState(blockpos2, Blocks.sand.getDefaultState());
+                    BlockPos blockpos3 = blockpos2.down();
+                    BlockPos blockpos4 = blockpos3.down();
+                    this.worldObj.setBlockState(blockpos3, Blocks.sand.getDefaultState());
+                    this.worldObj.setBlockState(blockpos4, Blocks.sandstone.getDefaultState());
+                }
+
+                if (worldObj.getBiomeGenForCoords(blockpos2).topBlock.getBlock().equals(Blocks.sand) && worldObj.getBlockState(blockpos2).getBlock().equals(Blocks.sand)) {
+                    IBlockState state = worldObj.getBiomeGenForCoords(blockpos2).topBlock;
+
+                    if(state.getValue(VARIANT).getMetadata()==1) {
+                        this.worldObj.setBlockState(blockpos2, Blocks.sand.getDefaultState().withProperty(BlockSand.VARIANT, BlockSand.EnumType.RED_SAND));
+                    } else if(state.getValue(VARIANT).getMetadata()==0) {
+                        this.worldObj.setBlockState(blockpos2, Blocks.sand.getDefaultState());
+                    }
+                }
+
+                ArrayList<BiomeGenBase> biomeWhitelist = new ArrayList<>();
+                biomeWhitelist.add(BiomeGenBase.swampland);
+                biomeWhitelist.add(BiomeGenBase.extremeHills);
+                biomeWhitelist.add(BiomeGenBase.mushroomIsland);
+                biomeWhitelist.add(BiomeGenBase.mushroomIslandShore);
+
+                if (!biomegenbase.equals(BiomeGenBase.stoneMountains)&& worldObj.getBiomeGenForCoords(blockpos2).topBlock.getBlock().equals(Blocks.grass) && whitelist2.contains(worldObj.getBlockState(blockpos2).getBlock())) {
+                    if (biomeWhitelist.contains(worldObj.getBiomeGenForCoords(blockpos2))) {
+                        this.worldObj.setBlockState(blockpos2, Blocks.grass.getDefaultState());
+                        BlockPos blockpos3 = blockpos2.down();
+                        BlockPos blockpos4 = blockpos3.down();
+                        this.worldObj.setBlockState(blockpos3, Blocks.dirt.getDefaultState());
+                        this.worldObj.setBlockState(blockpos4, Blocks.dirt.getDefaultState());
+                    }
+                }
+
+                if(biomegenbase.equals(BiomeGenBase.stoneMountains) && blockpos1.getY()>92) {
+                    IBlockState block;
+                    if (this.worldObj.canSnowAt(blockpos1, false)) {
+                        block = Blocks.snow.getDefaultState();
+                        while ((worldObj.getBlockState(blockpos1).getBlock()==Blocks.log2||worldObj.getBlockState(blockpos1).getBlock()==Blocks.log) &&blockpos1.getY()>80) {
+                            blockpos1=blockpos1.down();
+                        }
+                        if(blockpos1.getY()>89) {
+                            blockpos2 = blockpos1.down();
+
+                            if (worldObj.getBlockState(blockpos2).getBlock() != Blocks.air) {
+                                this.worldObj.setBlockState(blockpos2, block);
+                            }
+                            BlockPos blockpos3 = blockpos2.down();
+                            if (worldObj.getBlockState(blockpos3).getBlock() != Blocks.air) {
+                                this.worldObj.setBlockState(blockpos3, block);
+                            }
+                            BlockPos blockpos4 = blockpos3.down();
+                            if (worldObj.getBlockState(blockpos4).getBlock() != Blocks.air) {
+                                this.worldObj.setBlockState(blockpos4, block);
+                            }
+                        }
+                    }
+
+                }
+
             }
         }
 

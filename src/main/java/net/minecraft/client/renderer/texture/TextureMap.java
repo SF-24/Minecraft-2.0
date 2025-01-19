@@ -131,7 +131,7 @@ public class TextureMap extends AbstractTexture implements ITickableTextureObjec
                             }
                             catch (IOException ioexception)
                             {
-                                logger.error("Unable to load miplevel {} from: {}", new Object[] {Integer.valueOf(i2), resourcelocation2, ioexception});
+                                logger.error("Unable to load miplevel {} from: {}", i2, resourcelocation2, ioexception);
                             }
                         }
                     }

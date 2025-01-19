@@ -17,6 +17,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.world.ColorizerFoliage;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeGenBase;
 
 public class BlockOldLeaf extends BlockLeaves
 {
@@ -61,8 +62,15 @@ public class BlockOldLeaf extends BlockLeaves
 
             if (blockplanks$enumtype == BlockPlanks.EnumType.BIRCH)
             {
+                if(worldIn.getBiomeGenForCoords(pos).equals(BiomeGenBase.autumnalForest)) {
+                    return 13850924;
+                }
                 return ColorizerFoliage.getFoliageColorBirch();
             }
+            if(worldIn.getBiomeGenForCoords(pos).equals(BiomeGenBase.autumnalForest) && blockplanks$enumtype == BlockPlanks.EnumType.OAK) {
+                return 14973467;
+            }
+
         }
 
         return super.colorMultiplier(worldIn, pos, renderPass);

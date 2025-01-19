@@ -1,7 +1,6 @@
 package net.minecraft.world.gen;
 
 import com.google.common.base.Objects;
-import java.util.Random;
 import net.minecraft.block.BlockSand;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -11,14 +10,20 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkPrimer;
 
-public class MapGenCaves extends MapGenBase
-{
-    protected void func_180703_a(long p_180703_1_, int p_180703_3_, int p_180703_4_, ChunkPrimer p_180703_5_, double p_180703_6_, double p_180703_8_, double p_180703_10_)
+import java.util.Random;
+
+
+public class MapGenCaves extends MapGenBase {
+
+//    final List<Integer> desertIds = Arrays.asList(2,130,17);
+
+    protected void addRoom(long p_180703_1_, int p_180703_3_, int p_180703_4_, ChunkPrimer p_180703_5_, double p_180703_6_, double p_180703_8_, double p_180703_10_)
     {
-        this.func_180702_a(p_180703_1_, p_180703_3_, p_180703_4_, p_180703_5_, p_180703_6_, p_180703_8_, p_180703_10_, 1.0F + this.rand.nextFloat() * 6.0F, 0.0F, 0.0F, -1, -1, 0.5D);
+        this.addTunnel(p_180703_1_, p_180703_3_, p_180703_4_, p_180703_5_, p_180703_6_, p_180703_8_, p_180703_10_, 1.0F + this.rand.nextFloat() * 6.0F, 0.0F, 0.0F, -1, -1, 0.5D);
     }
 
-    protected void func_180702_a(long p_180702_1_, int p_180702_3_, int p_180702_4_, ChunkPrimer p_180702_5_, double p_180702_6_, double p_180702_8_, double p_180702_10_, float p_180702_12_, float p_180702_13_, float p_180702_14_, int p_180702_15_, int p_180702_16_, double p_180702_17_)
+    // gen room !!!
+    protected void addTunnel(long p_180702_1_, int p_180702_3_, int p_180702_4_, ChunkPrimer p_180702_5_, double p_180702_6_, double p_180702_8_, double p_180702_10_, float p_180702_12_, float p_180702_13_, float p_180702_14_, int p_180702_15_, int p_180702_16_, double p_180702_17_)
     {
         double d0 = (double)(p_180702_3_ * 16 + 8);
         double d1 = (double)(p_180702_4_ * 16 + 8);
@@ -70,8 +75,8 @@ public class MapGenCaves extends MapGenBase
 
             if (!flag2 && p_180702_15_ == j && p_180702_12_ > 1.0F && p_180702_16_ > 0)
             {
-                this.func_180702_a(random.nextLong(), p_180702_3_, p_180702_4_, p_180702_5_, p_180702_6_, p_180702_8_, p_180702_10_, random.nextFloat() * 0.5F + 0.5F, p_180702_13_ - ((float)Math.PI / 2F), p_180702_14_ / 3.0F, p_180702_15_, p_180702_16_, 1.0D);
-                this.func_180702_a(random.nextLong(), p_180702_3_, p_180702_4_, p_180702_5_, p_180702_6_, p_180702_8_, p_180702_10_, random.nextFloat() * 0.5F + 0.5F, p_180702_13_ + ((float)Math.PI / 2F), p_180702_14_ / 3.0F, p_180702_15_, p_180702_16_, 1.0D);
+                this.addTunnel(random.nextLong(), p_180702_3_, p_180702_4_, p_180702_5_, p_180702_6_, p_180702_8_, p_180702_10_, random.nextFloat() * 0.5F + 0.5F, p_180702_13_ - ((float)Math.PI / 2F), p_180702_14_ / 3.0F, p_180702_15_, p_180702_16_, 1.0D);
+                this.addTunnel(random.nextLong(), p_180702_3_, p_180702_4_, p_180702_5_, p_180702_6_, p_180702_8_, p_180702_10_, random.nextFloat() * 0.5F + 0.5F, p_180702_13_ + ((float)Math.PI / 2F), p_180702_14_ / 3.0F, p_180702_15_, p_180702_16_, 1.0D);
                 return;
             }
 
@@ -156,6 +161,10 @@ public class MapGenCaves extends MapGenBase
                     {
                         BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
 
+                        /**
+                         * Block removal:
+                         * */
+
                         for (int j3 = k2; j3 < k; ++j3)
                         {
                             double d10 = ((double)(j3 + p_180702_3_ * 16) + 0.5D - p_180702_6_) / d2;
@@ -183,13 +192,23 @@ public class MapGenCaves extends MapGenBase
 
                                             if (this.func_175793_a(iblockstate1, iblockstate2))
                                             {
-                                                if (j2 - 1 < 10)
+                                                // generate lava under a certain y level. Default: 10 -> changed to 4
+                                                if (j2 - 1 < 4)
                                                 {
                                                     p_180702_5_.setBlockState(j3, j2, i2, Blocks.lava.getDefaultState());
                                                 }
                                                 else
                                                 {
+                                                    // test for certain block
+
                                                     p_180702_5_.setBlockState(j3, j2, i2, Blocks.air.getDefaultState());
+
+
+                                                    // replace stone with ice in snowy biomes
+                                                    if(j2+1>40 && this.worldObj.getBiomeGenForCoords(blockpos$mutableblockpos).isSnowyBiome() && iblockstate2.getBlock() == Blocks.stone) {
+                                                        iblockstate2=Blocks.snow.getDefaultState();
+                                                        // TODO:
+                                                    }
 
                                                     if (iblockstate2.getBlock() == Blocks.sand)
                                                     {
@@ -229,9 +248,11 @@ public class MapGenCaves extends MapGenBase
      */
     protected void recursiveGenerate(World worldIn, int chunkX, int chunkZ, int p_180701_4_, int p_180701_5_, ChunkPrimer chunkPrimerIn)
     {
-        int i = this.rand.nextInt(this.rand.nextInt(this.rand.nextInt(15) + 1) + 1);
+        // density
+        int i = this.rand.nextInt(this.rand.nextInt(this.rand.nextInt(40 /*was 15*/) + 1) + 1);
 
-        if (this.rand.nextInt(7) != 0)
+        // amount
+        if (this.rand.nextInt(15 /*was 7*/) != 0)
         {
             i = 0;
         }
@@ -245,7 +266,7 @@ public class MapGenCaves extends MapGenBase
 
             if (this.rand.nextInt(4) == 0)
             {
-                this.func_180703_a(this.rand.nextLong(), p_180701_4_, p_180701_5_, chunkPrimerIn, d0, d1, d2);
+                this.addRoom(this.rand.nextLong(), p_180701_4_, p_180701_5_, chunkPrimerIn, d0, d1, d2);
                 k += this.rand.nextInt(4);
             }
 
@@ -260,8 +281,10 @@ public class MapGenCaves extends MapGenBase
                     f2 *= this.rand.nextFloat() * this.rand.nextFloat() * 3.0F + 1.0F;
                 }
 
-                this.func_180702_a(this.rand.nextLong(), p_180701_4_, p_180701_5_, chunkPrimerIn, d0, d1, d2, f2, f, f1, 0, 0, 1.0D);
+                this.addTunnel(this.rand.nextLong(), p_180701_4_, p_180701_5_, chunkPrimerIn, d0, d1, d2, f2, f, f1, 0, 0, 1.0D);
             }
         }
     }
 }
+
+

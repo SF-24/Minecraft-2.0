@@ -549,8 +549,11 @@ public abstract class ServerConfigurationManager
      * @param oldWorldIn The world transfering from
      * @param toWorldIn The world transfering the entity to
      */
-    public void transferEntityToWorld(Entity entityIn, int p_82448_2_, WorldServer oldWorldIn, WorldServer toWorldIn)
+    public void transferEntityToWorld(Entity entityIn, int id, WorldServer oldWorldIn, WorldServer toWorldIn)
     {
+        // id = coming from, dim = going to
+        System.out.println("ID: " + id + " | dim: " + entityIn.dimension);
+
         double d0 = entityIn.posX;
         double d1 = entityIn.posZ;
         double d2 = 8.0D;
@@ -583,7 +586,7 @@ public abstract class ServerConfigurationManager
         {
             BlockPos blockpos;
 
-            if (p_82448_2_ == 1)
+            if (id == 1)
             {
                 blockpos = toWorldIn.getSpawnPoint();
             }
@@ -605,7 +608,7 @@ public abstract class ServerConfigurationManager
 
         oldWorldIn.theProfiler.endSection();
 
-        if (p_82448_2_ != 1)
+        if (id != 1)
         {
             oldWorldIn.theProfiler.startSection("placing");
             d0 = (double)MathHelper.clamp_int((int)d0, -29999872, 29999872);
@@ -614,7 +617,12 @@ public abstract class ServerConfigurationManager
             if (entityIn.isEntityAlive())
             {
                 entityIn.setLocationAndAngles(d0, entityIn.posY, d1, entityIn.rotationYaw, entityIn.rotationPitch);
-                toWorldIn.getDefaultTeleporter().placeInPortal(entityIn, f);
+
+                if(id==2||entityIn.dimension==2) {
+                    toWorldIn.getDefaultTeleporter().placeInPortal(entityIn, f, true);
+                } else {
+                    toWorldIn.getDefaultTeleporter().placeInPortal(entityIn, f, false);
+                }
                 toWorldIn.spawnEntityInWorld(entityIn);
                 toWorldIn.updateEntityWithOptionalForce(entityIn, false);
             }

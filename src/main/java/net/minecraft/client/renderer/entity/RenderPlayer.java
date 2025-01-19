@@ -3,6 +3,7 @@ package net.minecraft.client.renderer.entity;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelPlayer;
+import net.minecraft.client.model.ModelPlayerEnum;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.layers.LayerArrow;
 import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
@@ -22,15 +23,16 @@ public class RenderPlayer extends RendererLivingEntity<AbstractClientPlayer>
 {
     /** this field is used to indicate the 3-pixel wide arms */
     private boolean smallArms;
+    private boolean isFox;
 
     public RenderPlayer(RenderManager renderManager)
     {
-        this(renderManager, false);
+        this(renderManager, false, ModelPlayerEnum.HUMAN);
     }
 
-    public RenderPlayer(RenderManager renderManager, boolean useSmallArms)
+    public RenderPlayer(RenderManager renderManager, boolean useSmallArms, ModelPlayerEnum playerModel)
     {
-        super(renderManager, new ModelPlayer(0.0F, useSmallArms), 0.5F);
+        super(renderManager, new ModelPlayer(0.0F, useSmallArms, playerModel), 0.5F);
         this.smallArms = useSmallArms;
         this.addLayer(new LayerBipedArmor(this));
         this.addLayer(new LayerHeldItem(this));

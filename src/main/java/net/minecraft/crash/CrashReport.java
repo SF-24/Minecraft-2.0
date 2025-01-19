@@ -57,7 +57,7 @@ public class CrashReport
         {
             public String call()
             {
-                return "1.8.9";
+                return "2.0";
             }
         });
         this.theReportCategory.addCrashSectionCallable("Operating System", new Callable<String>()

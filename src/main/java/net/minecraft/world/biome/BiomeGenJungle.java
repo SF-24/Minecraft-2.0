@@ -24,16 +24,16 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 public class BiomeGenJungle extends BiomeGenBase
 {
     private boolean field_150614_aC;
-    private static final IBlockState field_181620_aE = Blocks.log.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE);
-    private static final IBlockState field_181621_aF = Blocks.leaves.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.JUNGLE).withProperty(BlockLeaves.CHECK_DECAY, Boolean.valueOf(false));
-    private static final IBlockState field_181622_aG = Blocks.leaves.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK).withProperty(BlockLeaves.CHECK_DECAY, Boolean.valueOf(false));
+    private static final IBlockState JUNGLE_LOG = Blocks.log.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE);
+    private static final IBlockState JUNGLE_LEAVES = Blocks.leaves.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.JUNGLE).withProperty(BlockLeaves.CHECK_DECAY, Boolean.valueOf(false));
+    private static final IBlockState OAK_LEAVES = Blocks.leaves.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK).withProperty(BlockLeaves.CHECK_DECAY, Boolean.valueOf(false));
 
-    public BiomeGenJungle(int id, boolean p_i45379_2_)
+    public BiomeGenJungle(int id, boolean isNotJungleHills)
     {
         super(id);
-        this.field_150614_aC = p_i45379_2_;
+        this.field_150614_aC = isNotJungleHills;
 
-        if (p_i45379_2_)
+        if (isNotJungleHills)
         {
             this.theBiomeDecorator.treesPerChunk = 2;
         }
@@ -45,7 +45,7 @@ public class BiomeGenJungle extends BiomeGenBase
         this.theBiomeDecorator.grassPerChunk = 25;
         this.theBiomeDecorator.flowersPerChunk = 4;
 
-        if (!p_i45379_2_)
+        if (!isNotJungleHills)
         {
             this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntityOcelot.class, 2, 1, 1));
         }
@@ -55,7 +55,7 @@ public class BiomeGenJungle extends BiomeGenBase
 
     public WorldGenAbstractTree genBigTreeChance(Random rand)
     {
-        return (WorldGenAbstractTree)(rand.nextInt(10) == 0 ? this.worldGeneratorBigTree : (rand.nextInt(2) == 0 ? new WorldGenShrub(field_181620_aE, field_181622_aG) : (!this.field_150614_aC && rand.nextInt(3) == 0 ? new WorldGenMegaJungle(false, 10, 20, field_181620_aE, field_181621_aF) : new WorldGenTrees(false, 4 + rand.nextInt(7), field_181620_aE, field_181621_aF, true))));
+        return (WorldGenAbstractTree)(rand.nextInt(10) == 0 ? this.worldGeneratorBigTree : (rand.nextInt(2) == 0 ? new WorldGenShrub(JUNGLE_LOG, OAK_LEAVES) : (!this.field_150614_aC && rand.nextInt(3) == 0 ? new WorldGenMegaJungle(false, 10, 20, JUNGLE_LOG, JUNGLE_LEAVES) : new WorldGenTrees(false, 4 + rand.nextInt(7), JUNGLE_LOG, JUNGLE_LEAVES, true))));
     }
 
     /**
@@ -75,10 +75,11 @@ public class BiomeGenJungle extends BiomeGenBase
         (new WorldGenMelon()).generate(worldIn, rand, pos.add(i, k, j));
         WorldGenVines worldgenvines = new WorldGenVines();
 
-        for (j = 0; j < 50; ++j)
+        for (j = 0; j < 80 /* was 50 */; ++j)
         {
             k = rand.nextInt(16) + 8;
-            int l = 128;
+            //int l = 128;
+            int l = rand.nextInt(128);
             int i1 = rand.nextInt(16) + 8;
             worldgenvines.generate(worldIn, rand, pos.add(k, 128, i1));
         }

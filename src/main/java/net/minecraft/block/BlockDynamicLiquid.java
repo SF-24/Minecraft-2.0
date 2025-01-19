@@ -26,7 +26,7 @@ public class BlockDynamicLiquid extends BlockLiquid
 
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
-        int i = ((Integer)state.getValue(LEVEL)).intValue();
+        int i = (Integer) state.getValue(LEVEL);
         int j = 1;
 
         if (this.blockMaterial == Material.lava && !worldIn.provider.doesWaterVaporize())

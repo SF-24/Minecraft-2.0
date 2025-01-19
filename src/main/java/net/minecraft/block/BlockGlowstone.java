@@ -4,9 +4,12 @@ import java.util.Random;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.MathHelper;
 
 public class BlockGlowstone extends Block
@@ -22,7 +25,17 @@ public class BlockGlowstone extends Block
      */
     public int quantityDroppedWithBonus(int fortune, Random random)
     {
-        return MathHelper.clamp_int(this.quantityDropped(random) + random.nextInt(fortune + 1), 1, 4);
+        int clampedFortune = 10-(2*fortune);
+        if(clampedFortune<0) clampedFortune=0;
+        int modifier = 0;
+        int randomVal = random.nextInt(clampedFortune);
+        if(randomVal<=1 && fortune>0) {
+            modifier=1;
+            System.out.println("duplication");
+        }
+        int returnVal = MathHelper.clamp_int(this.quantityDropped(random) + modifier, 0, 4);
+        System.out.println("return " + returnVal);
+        return returnVal;
     }
 
     /**
@@ -30,7 +43,7 @@ public class BlockGlowstone extends Block
      */
     public int quantityDropped(Random random)
     {
-        return 2 + random.nextInt(3);
+        return 0;//1 + random.nextInt(3);
     }
 
     /**
