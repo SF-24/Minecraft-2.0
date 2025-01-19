@@ -1,7 +1,7 @@
 # MC-2.0 client
 
 ### About
-A fork of version 1.8.9 implementing changes which I believe wiykd benefit the game. A fork of Maven-MCP-1.8.9
+A fork of version 1.8.9 implementing changes which I believe would benefit the game. A fork of Maven-MCP-1.8.9
 
 ### About the structure
 The code is split into two groups: Resources (assets, graphics, shaders etc.) and code.<br>
