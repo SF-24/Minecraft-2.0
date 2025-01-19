@@ -1,7 +1,7 @@
-# MavenMCP 1.8.9
+# MC-2.0 client
 
 ### About
-Maven MCP 1.8.9 is an updated version of MCP. It uses Maven, has a clean code structure, supports Linux and version control in your projects!
+A fork of version 1.8.9 implementing changes which I believe wiykd benefit the game. A fork of Maven-MCP-1.8.9
 
 ### About the structure
 The code is split into two groups: Resources (assets, graphics, shaders etc.) and code.<br>
