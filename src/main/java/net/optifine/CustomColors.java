@@ -99,7 +99,7 @@ public class CustomColors
     private static final IBlockState BLOCK_STATE_DIRT = Blocks.dirt.getDefaultState();
     private static final IBlockState BLOCK_STATE_WATER = Blocks.water.getDefaultState();
     public static Random random = new Random();
-    private static final IColorizer COLORIZER_GRASS = new IColorizer()
+    private static final CustomColors.IColorizer COLORIZER_GRASS = new CustomColors.IColorizer()
     {
         public int getColor(IBlockState blockState, IBlockAccess blockAccess, BlockPos blockPos)
         {
@@ -111,7 +111,7 @@ public class CustomColors
             return false;
         }
     };
-    private static final IColorizer COLORIZER_FOLIAGE = new IColorizer()
+    private static final CustomColors.IColorizer COLORIZER_FOLIAGE = new CustomColors.IColorizer()
     {
         public int getColor(IBlockState blockState, IBlockAccess blockAccess, BlockPos blockPos)
         {
@@ -123,7 +123,7 @@ public class CustomColors
             return false;
         }
     };
-    private static final IColorizer COLORIZER_FOLIAGE_PINE = new IColorizer()
+    private static final CustomColors.IColorizer COLORIZER_FOLIAGE_PINE = new CustomColors.IColorizer()
     {
         public int getColor(IBlockState blockState, IBlockAccess blockAccess, BlockPos blockPos)
         {
@@ -134,7 +134,7 @@ public class CustomColors
             return CustomColors.foliagePineColors == null;
         }
     };
-    private static final IColorizer COLORIZER_FOLIAGE_BIRCH = new IColorizer()
+    private static final CustomColors.IColorizer COLORIZER_FOLIAGE_BIRCH = new CustomColors.IColorizer()
     {
         public int getColor(IBlockState blockState, IBlockAccess blockAccess, BlockPos blockPos)
         {
@@ -145,7 +145,7 @@ public class CustomColors
             return CustomColors.foliageBirchColors == null;
         }
     };
-    private static final IColorizer COLORIZER_WATER = new IColorizer()
+    private static final CustomColors.IColorizer COLORIZER_WATER = new CustomColors.IColorizer()
     {
         public int getColor(IBlockState blockState, IBlockAccess blockAccess, BlockPos blockPos)
         {
@@ -852,7 +852,7 @@ public class CustomColors
         else
         {
             int i = renderEnv.getMetadata();
-            IColorizer customcolors$icolorizer;
+            CustomColors.IColorizer customcolors$icolorizer;
 
             if (block != Blocks.grass && block != Blocks.tallgrass && block != Blocks.double_plant)
             {
@@ -965,7 +965,7 @@ public class CustomColors
         }
     }
 
-    private static int getSmoothColorMultiplier(IBlockState blockState, IBlockAccess blockAccess, BlockPos blockPos, IColorizer colorizer, BlockPosM blockPosM)
+    private static int getSmoothColorMultiplier(IBlockState blockState, IBlockAccess blockAccess, BlockPos blockPos, CustomColors.IColorizer colorizer, BlockPosM blockPosM)
     {
         int i = 0;
         int j = 0;
@@ -996,7 +996,7 @@ public class CustomColors
     public static int getFluidColor(IBlockAccess blockAccess, IBlockState blockState, BlockPos blockPos, RenderEnv renderEnv)
     {
         Block block = blockState.getBlock();
-        IColorizer customcolors$icolorizer = getBlockColormap(blockState);
+        CustomColors.IColorizer customcolors$icolorizer = getBlockColormap(blockState);
 
         if (customcolors$icolorizer == null && blockState.getBlock().getMaterial() == Material.water)
         {
@@ -1594,7 +1594,7 @@ public class CustomColors
 
         for (Object o : props.keySet())
         {
-        	String s = (String)o;
+            String s = (String)o;
             String s1 = props.getProperty(s);
 
             if (s.startsWith(prefix))

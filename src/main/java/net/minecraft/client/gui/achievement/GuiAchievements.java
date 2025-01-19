@@ -23,7 +23,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
 
-public class  GuiAchievements extends GuiScreen implements IProgressMeter
+public class GuiAchievements extends GuiScreen implements IProgressMeter
 {
     private static final int field_146572_y = AchievementList.minDisplayColumn * 24 - 112;
     private static final int field_146571_z = AchievementList.minDisplayRow * 24 - 112;
@@ -94,7 +94,7 @@ public class  GuiAchievements extends GuiScreen implements IProgressMeter
      */
     protected void keyTyped(char typedChar, int keyCode) throws IOException
     {
-        if (keyCode == this.mc.gameSettings.keyBindInventory.getKeyCode())
+        if (keyCode == this.mc.gameSettings.keyBindSprint.getKeyCode())
         {
             this.mc.displayGuiScreen((GuiScreen)null);
             this.mc.setIngameFocus();

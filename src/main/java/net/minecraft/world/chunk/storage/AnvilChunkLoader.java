@@ -224,7 +224,7 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
         }
     }
 
-    private final byte[] dummySkylight = new byte[2048];
+    //private final byte[] dummySkylight = new byte[2048];
 
     /**
      * Writes the Chunk passed as an argument to the NBTTagCompound also passed, using the World argument to retrieve
@@ -291,7 +291,7 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
                 }
                 else
                 {
-                    nbttagcompound.setByteArray("SkyLight", this.dummySkylight);//new byte[extendedblockstorage.getBlocklightArray().getData().length]);
+                    nbttagcompound.setByteArray("SkyLight", new byte[extendedblockstorage.getBlocklightArray().getData().length]);
                 }
 
                 nbttaglist.appendTag(nbttagcompound);

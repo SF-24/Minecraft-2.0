@@ -17,7 +17,7 @@ import net.minecraft.util.ResourceLocation;
 public class CapeUtils
 {
     private static final Pattern PATTERN_USERNAME = Pattern.compile("[a-zA-Z0-9_]+");
-
+/*
     public static void downloadCape(AbstractClientPlayer player)
     {
         String s = player.getNameClear();
@@ -97,5 +97,5 @@ public class CapeUtils
         player.setLocationOfCape((ResourceLocation)null);
         player.setElytraOfCape(false);
         downloadCape(player);
-    }
+    }*/
 }

@@ -14,6 +14,7 @@ public class PlayerConfigurations
     private static boolean reloadPlayerItems = Boolean.getBoolean("player.models.reload");
     private static long timeReloadPlayerItemsMs = System.currentTimeMillis();
 
+
     public static void renderPlayerItems(ModelBiped modelBiped, AbstractClientPlayer player, float scale, float partialTicks)
     {
         PlayerConfiguration playerconfiguration = getPlayerConfiguration(player);
@@ -32,14 +33,15 @@ public class PlayerConfigurations
 
             if (abstractclientplayer != null)
             {
-                setPlayerConfiguration(abstractclientplayer.getNameClear(), (PlayerConfiguration)null);
+                //setPlayerConfiguration(abstractclientplayer.getNameClear(), (PlayerConfiguration)null);
                 timeReloadPlayerItemsMs = System.currentTimeMillis();
             }
         }
 
-        String s1 = player.getNameClear();
+//        String s1 = player.getNameClear();
+    String s1=null;
 
-        if (s1 == null)
+        if (/*s1 == null*/true)
         {
             return null;
         }

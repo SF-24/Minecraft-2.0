@@ -106,7 +106,7 @@ public class GuiScreenCapeOF extends GuiScreenOF
                 {
                     long i = 15000L;
                     long j = System.currentTimeMillis() + i;
-                    this.mc.thePlayer.setReloadCapeTimeMs(j);
+                    //this.mc.thePlayer.setReloadCapeTimeMs(j);
                 }
             }
 
