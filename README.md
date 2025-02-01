@@ -1,4 +1,4 @@
-# MavenMCP 1.8.9
+Moved to: https://github.com/SF-24/Minecraft-2.0-new
 
 ### About
 Maven MCP 1.8.9 is an updated version of MCP. It uses Maven, has a clean code structure, supports Linux and version control in your projects!
